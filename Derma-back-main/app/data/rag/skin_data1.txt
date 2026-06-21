@@ -1,0 +1,1207 @@
+Q: What is the treatment protocol for Lichen Planus (Mild)?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: How should Mild Lichen Planus be treated?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: What medications are recommended for Mild Lichen Planus?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: What are the treatment options for Lichen Planus at the Mild stage?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: The model classified this case as Lichen Planus - Mild. What is the recommended treatment?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: Patient has Lichen Planus diagnosed as Mild. What treatment should be prescribed?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: What drugs are used for Mild stage Lichen Planus?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: Suggest a treatment plan for Lichen Planus at Mild severity.
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: Lichen Planus Mild treatment
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: treat Mild Lichen Planus
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: management of Mild Lichen Planus
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: علاج Lichen Planus مرحلة Mild
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: ما هو علاج Lichen Planus في مرحلة Mild؟
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+==================================================
+Q: What is the treatment protocol for Lichen Planus (Severe)?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: How should Severe Lichen Planus be treated?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: What medications are recommended for Severe Lichen Planus?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: What are the treatment options for Lichen Planus at the Severe stage?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: The model classified this case as Lichen Planus - Severe. What is the recommended treatment?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: Patient has Lichen Planus diagnosed as Severe. What treatment should be prescribed?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: What drugs are used for Severe stage Lichen Planus?
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: Suggest a treatment plan for Lichen Planus at Severe severity.
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: Lichen Planus Severe treatment
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: treat Severe Lichen Planus
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: management of Severe Lichen Planus
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: علاج Lichen Planus مرحلة Severe
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: ما هو علاج Lichen Planus في مرحلة Severe؟
+A: 1. Topical potent steroid
+2. Antihistamines
+3. Screening for Hepatitis C
+4. Methotrexate
+5. Folic acid
+6. Pulse dose systemic prednisolone
+7. Phototherapy
+==================================================
+Q: What is the treatment protocol for MF (Advanced Stage)?
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: How should Advanced Stage MF be treated?
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: What medications are recommended for Advanced Stage MF?
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: What are the treatment options for MF at the Advanced Stage stage?
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: The model classified this case as MF - Advanced Stage. What is the recommended treatment?
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: Patient has MF diagnosed as Advanced Stage. What treatment should be prescribed?
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: What drugs are used for Advanced Stage stage MF?
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: Suggest a treatment plan for MF at Advanced Stage severity.
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: MF Advanced Stage treatment
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: treat Advanced Stage MF
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: management of Advanced Stage MF
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: علاج MF مرحلة Advanced Stage
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: ما هو علاج MF في مرحلة Advanced Stage؟
+A: 1. Refer to Oncology
+2. Nuclear scan
+3. Chemotherapy
+==================================================
+Q: What is the treatment protocol for MF (Early Stage)?
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: How should Early Stage MF be treated?
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: What medications are recommended for Early Stage MF?
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: What are the treatment options for MF at the Early Stage stage?
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: The model classified this case as MF - Early Stage. What is the recommended treatment?
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: Patient has MF diagnosed as Early Stage. What treatment should be prescribed?
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: What drugs are used for Early Stage stage MF?
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: Suggest a treatment plan for MF at Early Stage severity.
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: MF Early Stage treatment
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: treat Early Stage MF
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: management of Early Stage MF
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: علاج MF مرحلة Early Stage
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: ما هو علاج MF في مرحلة Early Stage؟
+A: 1. Phototherapy
+2. Methotrexate (dose adjusted)
+==================================================
+Q: What is the treatment protocol for Psoriasis (Mild/Localized)?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: How should Mild/Localized Psoriasis be treated?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: What medications are recommended for Mild/Localized Psoriasis?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: What are the treatment options for Psoriasis at the Mild/Localized stage?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: The model classified this case as Psoriasis - Mild/Localized. What is the recommended treatment?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: Patient has Psoriasis diagnosed as Mild/Localized. What treatment should be prescribed?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: What drugs are used for Mild/Localized stage Psoriasis?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: Suggest a treatment plan for Psoriasis at Mild/Localized severity.
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: Psoriasis Mild/Localized treatment
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: treat Mild/Localized Psoriasis
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: management of Mild/Localized Psoriasis
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: علاج Psoriasis مرحلة Mild/Localized
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: ما هو علاج Psoriasis في مرحلة Mild/Localized؟
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+==================================================
+Q: What is the treatment protocol for Psoriasis (Severe/Widespread)?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: How should Severe/Widespread Psoriasis be treated?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: What medications are recommended for Severe/Widespread Psoriasis?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: What are the treatment options for Psoriasis at the Severe/Widespread stage?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: The model classified this case as Psoriasis - Severe/Widespread. What is the recommended treatment?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: Patient has Psoriasis diagnosed as Severe/Widespread. What treatment should be prescribed?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: What drugs are used for Severe/Widespread stage Psoriasis?
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: Suggest a treatment plan for Psoriasis at Severe/Widespread severity.
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: Psoriasis Severe/Widespread treatment
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: treat Severe/Widespread Psoriasis
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: management of Severe/Widespread Psoriasis
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: علاج Psoriasis مرحلة Severe/Widespread
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: ما هو علاج Psoriasis في مرحلة Severe/Widespread؟
+A: 1. Topical steroids with vitamin D
+2. Keratolytics
+3. Emollients
+4. Methotrexate vial (dose adjusted)
+5. Folic acid tab
+6. Phototherapy
+7. Biological treatment
+==================================================
+Q: What is the treatment protocol for Tinea (Localized)?
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: How should Localized Tinea be treated?
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: What medications are recommended for Localized Tinea?
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: What are the treatment options for Tinea at the Localized stage?
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: The model classified this case as Tinea - Localized. What is the recommended treatment?
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: Patient has Tinea diagnosed as Localized. What treatment should be prescribed?
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: What drugs are used for Localized stage Tinea?
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: Suggest a treatment plan for Tinea at Localized severity.
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: Tinea Localized treatment
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: treat Localized Tinea
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: management of Localized Tinea
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: علاج Tinea مرحلة Localized
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: ما هو علاج Tinea في مرحلة Localized؟
+A: 1. Ketoconazole shampoo
+2. Antifungal topical treatment
+==================================================
+Q: What is the treatment protocol for Urticaria (Mild)?
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: How should Mild Urticaria be treated?
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: What medications are recommended for Mild Urticaria?
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: What are the treatment options for Urticaria at the Mild stage?
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: The model classified this case as Urticaria - Mild. What is the recommended treatment?
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: Patient has Urticaria diagnosed as Mild. What treatment should be prescribed?
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: What drugs are used for Mild stage Urticaria?
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: Suggest a treatment plan for Urticaria at Mild severity.
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: Urticaria Mild treatment
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: treat Mild Urticaria
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: management of Mild Urticaria
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: علاج Urticaria مرحلة Mild
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+==================================================
+Q: ما هو علاج Urticaria في مرحلة Mild؟
+A: 1. Antihistamines
+2. Stop exposure to antigen
+3. Soothing agents
+
+==================================================
+================================================================================
+DERMATOLOGICAL DISEASES REFERENCE
+RAG-Optimized Medical Documentation
+================================================================================
+
+================================================================================
+DISEASE #1: PSORIASIS
+Classification: Chronic Autoimmune Inflammatory Disease
+================================================================================
+
+OVERVIEW:
+Psoriasis is a chronic autoimmune inflammatory disease affecting the skin, nails, and joints. It results from immune system dysregulation leading to excessive skin cell proliferation. Not contagious but lifelong condition associated with systemic inflammation and multiple comorbidities.
+
+KEY FACTS:
+- Not contagious
+- Chronic (lifelong)
+- Associated with systemic inflammation
+- Linked to other diseases (comorbidities)
+- Genetic predisposition with environmental triggers
+
+SYMPTOMS - SKIN:
+- Red plaques with silvery scales
+- Dry, cracked skin
+- Itching and burning sensation
+- Well-demarcated lesions
+
+SYMPTOMS - NAILS:
+- Nail pitting
+- Thickening of nails
+- Yellow discoloration
+- Onycholysis (nail separation)
+
+SYMPTOMS - JOINTS:
+- Pain and stiffness
+- Joint swelling
+- Psoriatic arthritis
+
+SEVERITY CLASSIFICATION:
+- Mild: <3% body surface area (BSA)
+- Moderate: 3-10% BSA
+- Severe: >10% BSA or sensitive areas involved
+
+CAUSES & ETIOLOGY:
+- Autoimmune dysfunction (T-cell mediated)
+- Genetic susceptibility (HLA genes)
+- Environmental interaction
+- Multifactorial inheritance pattern
+
+MOLECULAR MECHANISM:
+- T-cell activation and infiltration
+- Cytokine release: TNF-alpha, IL-17, IL-23
+- Increased keratinocyte proliferation
+- Accelerated turnover: 3-5 days (vs normal 28 days)
+- Inflammatory cascade amplification
+
+TRIGGERS & RISK FACTORS:
+- Psychological stress
+- Acute/chronic infections (streptococcal, viral)
+- Medications (beta-blockers, NSAIDs, lithium)
+- Trauma (Koebner phenomenon)
+- Smoking
+- Alcohol consumption
+- Cold weather exposure
+
+DIFFERENTIAL DIAGNOSIS:
+- Eczema (atopic dermatitis)
+- Seborrheic dermatitis
+- Fungal infections
+- Lichen planus
+- Drug eruptions
+
+DIAGNOSIS METHODS:
+- Clinical evaluation and morphology
+- PASI score (Psoriasis Area and Severity Index)
+- Skin biopsy (histopathology when needed)
+
+MONITORING & FOLLOW-UP:
+- Regular liver/kidney function tests (systemic drugs)
+- Joint evaluation (psoriatic arthritis assessment)
+- Cardiovascular risk assessment
+- Mental health screening
+
+COMPLICATIONS:
+- Psoriatic arthritis
+- Cardiovascular disease (increased risk)
+- Diabetes mellitus
+- Depression and anxiety
+- Metabolic syndrome
+
+PATIENT MANAGEMENT ADVICE:
+- Daily skin moisturization
+- Identify and avoid personal triggers
+- Maintain healthy body weight
+- Stress management techniques
+- Regular exercise
+
+RED FLAGS - EMERGENCY CARE REQUIRED:
+- Erythrodermic psoriasis (whole body redness)
+- Severe pain with fever
+- Pustular psoriasis with systemic symptoms
+
+================================================================================
+DISEASE #2: TINEA INFECTION (DERMATOPHYTOSIS / RINGWORM)
+Classification: Contagious Fungal Infection (Non-parasitic)
+================================================================================
+
+OVERVIEW:
+Tinea infections are common fungal infections caused by dermatophytes that affect the skin, hair, and nails. These fungi feed on keratin and thrive in warm, moist environments. Despite the name "ringworm," no parasitic worms are involved. Highly contagious through direct contact and contaminated objects.
+
+KEY FACTS:
+- Contagious fungal infection (not bacterial, not parasitic)
+- Caused by dermatophyte fungi
+- Affects skin, scalp, and nails
+- Spreads easily in humid, warm conditions
+- Common in athletes and crowded environments
+
+SYMPTOMS - SKIN LESIONS:
+- Red, ring-shaped rash with raised edges
+- Itching and irritation
+- Scaling and dryness
+- Central clearing with erythematous border
+
+SYMPTOMS - FEET (TINEA PEDIS):
+- Peeling skin between toes (interdigital)
+- Burning sensation and pain
+- Cracks and blisters
+- Maceration of skin
+
+SYMPTOMS - GROIN (TINEA CRURIS):
+- Red itchy rash in inner thighs
+- Burning and discomfort
+- Possible satellite lesions
+- Sharp, well-demarcated borders
+
+SYMPTOMS - SCALP (TINEA CAPITIS):
+- Scaly patches on scalp
+- Hair loss (alopecia)
+- Black dots appearance (broken hairs)
+- Swelling in severe cases (kerion formation)
+- Pustules and drainage
+
+SYMPTOMS - NAILS (TINEA UNGUIUM):
+- Thickened nails (hyperkeratosis)
+- Yellow or discolored nails
+- Brittle or deformed nails
+- Nail destruction
+
+SEVERITY CLASSIFICATION:
+- Mild: Localized skin infection, single area
+- Moderate: Multiple areas involved
+- Severe: Nail involvement OR scalp involvement OR widespread lesions
+
+CAUSATIVE ORGANISMS:
+- Trichophyton species (most common)
+- Microsporum species
+- Epidermophyton floccosum
+
+MOLECULAR MECHANISM:
+- Fungal invasion of keratinized tissue
+- Keratinase enzyme production (breaks down keratin)
+- Colonization of outer skin layers (stratum corneum)
+- Inflammatory response at host-fungal interface
+- No deep tissue invasion (superficial)
+
+TRANSMISSION ROUTES:
+- Direct skin-to-skin contact with infected person
+- Contact with infected animals (zoonotic)
+- Contaminated objects: towels, combs, floors, shoes
+- Shared spaces: pools, gyms, locker rooms
+
+TRIGGERS & RISK FACTORS:
+- Warm, humid climate exposure
+- Excessive sweating (hyperhidrosis)
+- Poor hygiene practices
+- Tight clothing (reduced ventilation)
+- Immunosuppression
+- Shared public spaces
+- Athlete population (sports-related)
+
+DIFFERENTIAL DIAGNOSIS:
+- Eczema (atopic dermatitis)
+- Psoriasis
+- Contact dermatitis
+- Candidiasis (yeast infection)
+- Seborrheic dermatitis
+
+DIAGNOSIS METHODS:
+- Clinical examination and morphology
+- KOH test (Potassium Hydroxide microscopy)
+- Fungal culture (gold standard)
+- Wood's lamp examination (some species)
+
+MONITORING & FOLLOW-UP:
+- Monitor for treatment response
+- Check treatment adherence
+- Nail infections require long-term follow-up (6-12 months)
+- Assess for recurrence
+
+COMPLICATIONS:
+- Secondary bacterial infection (cellulitis risk)
+- Chronic/recurrent infection
+- Scarring (rare)
+- Permanent hair loss (severe scalp infection)
+- Nail destruction and dystrophy
+
+PATIENT MANAGEMENT ADVICE:
+- Keep skin dry and clean
+- Do not share personal items (towels, combs, razors)
+- Wear breathable clothing
+- Change socks regularly (moisture control)
+- Treat infected pets
+- Maintain good hygiene
+
+RED FLAGS - EMERGENCY CARE REQUIRED:
+- Severe scalp swelling (kerion with drainage)
+- Spreading infection despite treatment
+- Signs of bacterial superinfection (pus, fever)
+- Systemic symptoms (fever, lymphadenopathy)
+
+================================================================================
+DISEASE #3: URTICARIA (HIVES)
+Classification: Acute/Chronic Hypersensitivity Reaction
+================================================================================
+
+OVERVIEW:
+Urticaria is a skin condition characterized by itchy, raised welts (hives) that can appear anywhere on the body. Often triggered by allergic reactions, physical stimuli, infections, or may occur without identifiable cause (idiopathic). Can be acute or chronic with variable presentation and prognosis.
+
+KEY FACTS:
+- Common skin condition (affects 15-20% of population lifetime)
+- Acute form: <6 weeks duration
+- Chronic form: >6 weeks duration
+- Often allergic or idiopathic etiology
+- May be associated with angioedema (deep swelling)
+- Usually not life-threatening except severe anaphylaxis cases
+
+SYMPTOMS - SKIN MANIFESTATIONS:
+- Raised red or skin-colored welts (wheals/hives)
+- Intense itching, burning, or stinging sensation
+- Variable shapes: round, ring-like, irregular
+- Rapid appearance and disappearance (<24 hours per lesion)
+- Evanescent nature of individual lesions
+
+SYMPTOMS - ANGIOEDEMA (DEEP SWELLING):
+- Deep swelling under the skin (dermis/subcutaneous)
+- Common sites: lips, face, eyelids, hands, feet
+- May involve throat (potentially dangerous)
+- Painful rather than itchy
+- Can last 24-72 hours
+
+URTICARIA TYPES:
+- Acute urticaria
+- Chronic spontaneous urticaria
+- Inducible urticaria: cold, heat, pressure, sunlight, exercise
+
+CAUSES & ETIOLOGY:
+- Allergic reactions: foods, medications, insect stings
+- Physical triggers: cold, heat, pressure, sunlight
+- Infections: viral or bacterial
+- Autoimmune factors
+- Stress and hormonal changes
+- Medications: NSAIDs, ACE inhibitors, aspirin
+- Idiopathic (unknown cause - 50% of chronic cases)
+
+MOLECULAR MECHANISM:
+- Mast cell activation and degranulation
+- Histamine release (primary mediator)
+- Increased vascular permeability
+- Dermal edema formation
+- Local inflammatory response
+- Complement activation (rare)
+
+TRIGGERS & PRECIPITATING FACTORS:
+- Foods: nuts, shellfish, berries
+- Drugs: NSAIDs, antibiotics, statins
+- Psychological stress
+- Temperature changes
+- Physical exercise
+- Viral/bacterial infections
+- Food additives and preservatives
+
+DIFFERENTIAL DIAGNOSIS:
+- Contact dermatitis
+- Atopic dermatitis (eczema)
+- Drug eruptions
+- Urticarial vasculitis
+- Erythema multiforme
+- Mastocytosis
+
+DIAGNOSIS METHODS:
+- Clinical evaluation and patient history
+- Trigger identification (food/contact diary)
+- Allergy testing (skin prick, serum-specific IgE) if indicated
+- Blood tests for chronic cases (CBC, CMP, thyroid)
+
+MONITORING & FOLLOW-UP:
+- Track symptom frequency and severity
+- Monitor response to antihistamines
+- Identify and document triggers
+- Assess impact on quality of life
+
+COMPLICATIONS:
+- Progression to chronic urticaria
+- Angioedema with respiratory involvement
+- Sleep disturbance
+- Significant quality of life reduction
+- Anaphylaxis (rare but life-threatening)
+
+PATIENT MANAGEMENT ADVICE:
+- Identify and avoid known triggers
+- Take antihistamines regularly (not just as needed)
+- Stress management and relaxation
+- Keep detailed symptom/trigger diary
+- Avoid hot baths (can trigger flares)
+
+RED FLAGS - EMERGENCY CARE REQUIRED:
+- Swelling of throat or tongue (airway risk)
+- Difficulty breathing or stridor
+- Severe angioedema
+- Signs of anaphylaxis (hypotension, shock)
+- Continuous symptoms despite treatment
+
+================================================================================
+DISEASE #4: LICHEN PLANUS
+Classification: Chronic Immune-Mediated Inflammatory Disease
+================================================================================
+
+OVERVIEW:
+Lichen planus is a chronic inflammatory disease affecting the skin, hair, nails, and mucous membranes (oral and genital areas). Characterized by distinctive purple, shiny, flat-topped papules on skin and lacy white patches on mucosal surfaces. Immune-mediated condition with variable course; may be self-limited or chronic. Not contagious.
+
+KEY FACTS:
+- Chronic inflammatory disorder (immune-mediated)
+- Affects skin, mucosa, nails, and hair
+- Autoimmune-like pathophysiology
+- Not contagious
+- May be self-limited or persist years
+- Associated with Hepatitis C in some populations
+
+SYMPTOMS - SKIN LESIONS:
+- Purple, polygonal, flat-topped papules
+- Shiny surface with fine white lines (Wickham striae)
+- Common sites: wrists, forearms, ankles, shins
+- Intense itching
+- Post-inflammatory hyperpigmentation
+- Erosive variants may form
+
+SYMPTOMS - ORAL LICHEN PLANUS:
+- Lacy white patches on tongue or inner cheeks (reticular form)
+- Painful ulcers or erosions
+- Burning sensation during eating
+- Erosive form most symptomatic
+- Difficulty with certain foods
+
+SYMPTOMS - GENITAL LICHEN PLANUS:
+- Painful erosions or ulcers
+- Discomfort during intercourse (dyspareunia)
+- Possible scarring (erosive variant)
+- Erosions may lead to adhesions
+
+SYMPTOMS - HAIR/SCALP (LICHEN PLANOPILARIS):
+- Hair loss (scarring alopecia)
+- Scalp inflammation
+- Irreversible hair follicle destruction
+- Permanent baldness in affected areas
+
+SYMPTOMS - NAILS:
+- Longitudinal ridging and grooves
+- Nail thinning or splitting
+- Nail loss in severe cases
+- Pterygium unguis (nail-skin fusion)
+
+CAUSES & ETIOLOGY:
+- Autoimmune reaction against basal keratinocytes
+- Associated with Hepatitis C infection (variable association)
+- Drug-induced: NSAIDs, antihypertensives, beta-blockers
+- Allergic reaction: dental metals (amalgam), contact allergens
+- Idiopathic in majority of cases
+
+MOLECULAR MECHANISM:
+- T-cell mediated immune response (CD8+ cytotoxic T cells)
+- Cytotoxic attack on basal epidermal cells
+- Inflammatory cytokine release (TNF-alpha, IFN-gamma)
+- Degeneration of basal layer (vacuolar interface dermatitis)
+- Apoptosis of keratinocytes
+
+TRIGGERS & EXACERBATING FACTORS:
+- Viral infections (especially Hepatitis C)
+- Medications (NSAIDs, ACE inhibitors)
+- Psychological stress
+- Dental materials (amalgam, nickel)
+- Trauma to affected areas (Koebner phenomenon)
+
+DIFFERENTIAL DIAGNOSIS:
+- Psoriasis
+- Leukoplakia (oral precancerous lesion)
+- Lupus erythematosus
+- Chronic candidiasis
+- Drug eruptions
+- Pemphigoid
+- Lichen sclerosus
+
+DIAGNOSIS METHODS:
+- Clinical examination and morphology
+- Skin or mucosal biopsy (confirmatory - essential)
+- Direct immunofluorescence (band-like pattern)
+- Hepatitis C screening (serologic testing)
+- Histopathology: saw-tooth appearance, basal cell degeneration
+
+MONITORING & FOLLOW-UP:
+- Assess lesion progression
+- Monitor pain and symptom severity
+- Regular oral lesion examination (cancer risk)
+- Screen for Hepatitis C status
+- Assess psychological impact
+
+COMPLICATIONS:
+- Chronic pain and discomfort
+- Scarring (especially genital and scalp)
+- Permanent hair loss (lichen planopilaris)
+- Nail destruction and dysfunction
+- Increased risk of oral squamous cell carcinoma (1-5%)
+- Psychological distress
+
+PATIENT MANAGEMENT ADVICE:
+- Avoid identified triggers (medications, irritants)
+- Maintain meticulous oral hygiene
+- Regular follow-up for oral lesions (cancer surveillance)
+- Stress reduction techniques
+- Avoid trauma to lesions
+- Psychological support for chronic cases
+
+RED FLAGS - EMERGENCY CARE REQUIRED:
+- Severe painful oral ulcers preventing eating/drinking
+- Rapid worsening of lesions
+- Suspicion of malignant transformation
+- Severe erosions with bleeding or infection
+
+================================================================================
+DISEASE #5: MYCOSIS FUNGOIDES (MF)
+Classification: Cutaneous T-Cell Lymphoma / Skin Cancer (CTCL)
+Tags: Cancer, Lymphoma, Malignancy, Hematologic
+================================================================================
+
+OVERVIEW:
+Mycosis fungoides is a rare, chronic cutaneous T-cell lymphoma (skin cancer) arising from malignant proliferation of CD4+ T lymphocytes. Most common type of primary cutaneous lymphoma. Typically progresses slowly through distinct clinical and pathological stages. Not contagious. Can remain localized to skin or progress systemically with involvement of lymph nodes and internal organs in advanced stages.
+
+KEY FACTS:
+- Rare cutaneous T-cell lymphoma (primary skin cancer)
+- Typically affects older adults (median age 55-60 years)
+- More common in males (male:female ratio ~2:1)
+- Chronic and progressive disease
+- Can remain localized to skin for extended periods
+- Systemic progression possible in advanced stages
+- Not contagious
+- Poor prognosis if visceral involvement develops
+
+SYMPTOMS - EARLY STAGE (PATCH PHASE):
+- Pruritic patches (flat, scaly, non-raised lesions)
+- Non-blanching erythematous patches
+- Common sites: buttocks, breasts, inner thighs, skin folds
+- Intense itching (pruritus)
+- Often misdiagnosed as eczema or psoriasis
+- May persist for years
+
+SYMPTOMS - INTERMEDIATE STAGE (PLAQUE PHASE):
+- Infiltrative plaques (raised, thickened lesions)
+- Well-defined borders
+- Hyperkeratotic (thickened) surface
+- Possible skin fold involvement
+- Color: violaceous or brownish
+- Surface may be scaly or lichenified
+
+SYMPTOMS - ADVANCED STAGE (TUMOR PHASE):
+- Nodules and tumors (>1cm, infiltrative)
+- Ulceration and bleeding
+- Exudation and crusting
+- Possible secondary infection
+- Erythroderma (whole body redness) in severe cases
+- Pain and drainage
+
+SYMPTOMS - SYSTEMIC DISEASE (ADVANCED STAGE IV):
+- Lymphadenopathy (enlarged lymph nodes)
+- Constitutional B symptoms: fever, night sweats, weight loss
+- Hepatomegaly (enlarged liver)
+- Splenomegaly (enlarged spleen)
+- Organ involvement: visceral lymphomas
+
+SEVERITY & STAGING - TNM CLASSIFICATION:
+
+Stage IA: Limited patches
+- <10% body surface area (BSA)
+- Normal lymph nodes
+- No systemic involvement
+
+Stage IB: Generalized patches
+- >10% BSA
+- Normal lymph nodes
+- No systemic involvement
+
+Stage IIA: Limited plaques
+- <10% BSA
+- Normal lymph nodes
+- No systemic involvement
+
+Stage IIB: Generalized plaques
+- >10% BSA
+- Normal lymph nodes
+- No systemic involvement
+
+Stage III: Erythroderma
+- Whole body or near-whole body involvement (>80% BSA)
+- Normal lymph nodes
+- No systemic disease
+
+Stage IV: Tumor-stage disease with systemic involvement
+- Any skin involvement
+- Lymph node involvement (N1-3) OR visceral disease (M1)
+- Poor prognosis
+
+CAUSES & ETIOLOGY:
+- Monoclonal proliferation of malignant T cells (clonal expansion)
+- Acquired genetic mutations in T-cell clones
+- Loss of normal T-cell regulation and apoptosis
+- Etiology not fully understood
+- Environmental and genetic factors likely involved
+- Possible viral cofactors (HTLV-1 controversial)
+
+MOLECULAR MECHANISM:
+- Malignant CD4+ T lymphocytes (helper T cells)
+- Loss of normal apoptosis and growth regulation
+- Infiltration of epidermis and dermis by neoplastic cells
+- Cytokine dysregulation (IL-5, IL-13, TNF-alpha)
+- Clonal T-cell receptor rearrangement
+- Possible role of immune dysregulation
+
+RISK FACTORS & TRIGGERS:
+- Advanced age (peak incidence 50-60 years)
+- Male gender
+- Genetic predisposition (familial clustering rare)
+- Chronic sun exposure (controversial)
+- Viral infections (proposed but unproven)
+- Chemical exposures (limited evidence)
+- Immunosuppression
+
+DIFFERENTIAL DIAGNOSIS:
+- Psoriasis
+- Chronic eczema (atopic dermatitis)
+- Lichen planus
+- Pityriasis rosea
+- Drug eruptions
+- Inflammatory dermatoses
+- Contact dermatitis
+- Seborrheic dermatitis
+
+DIAGNOSIS METHODS:
+- Clinical evaluation: appearance, morphology, distribution
+- Skin biopsy and histopathology (KEY diagnostic tool)
+- T-cell clonality testing: PCR for T-cell receptor genes
+- Immunophenotyping: flow cytometry (CD4+/CD8+ ratio, surface antigens)
+- TNM staging workup:
+  - Lymph node examination
+  - Imaging studies (CT, PET-CT for advanced disease)
+  - Bone marrow biopsy (select cases)
+  - Peripheral blood analysis
+
+MONITORING & FOLLOW-UP:
+- Regular clinical examination: every 3-6 months
+- Skin biopsies if lesions change character or spread
+- Lymph node assessment and palpation
+- Imaging surveillance (CT/PET) for advanced stages
+- Complete blood counts (CBC) if on systemic therapy
+- Liver and kidney function tests
+- Long-term disease monitoring (potential progression)
+
+COMPLICATIONS:
+- Secondary bacterial infections (skin integrity loss)
+- Psychological impact: appearance concerns, prognosis anxiety
+- Progression to advanced stages (systemic disease)
+- Visceral involvement: lymph nodes, liver, spleen, lungs
+- Erythroderma with fluid loss and temperature dysregulation
+- Leukemic transformation (Sézary syndrome - aggressive variant)
+- Treatment-related toxicities
+- Increased infection risk (T-cell dysfunction)
+
+PATIENT MANAGEMENT ADVICE:
+- Establish regular dermatology follow-up schedule
+- Avoid excessive sun exposure
+- Carefully monitor skin changes and lesion progression
+- Maintain skin care and hygiene
+- Psychological support and counseling (highly recommended)
+- Avoid scratching (reduces infection risk)
+- Report new symptoms promptly
+- Seek second opinion at specialized centers
+- Participate in patient support groups
+
+RED FLAGS - EMERGENCY CARE REQUIRED:
+- Rapid spread of lesions or erythroderma development
+- Severe erythroderma with fever/chills (risk of exfoliative dermatitis)
+- Signs of systemic disease: lymphadenopathy, hepatomegaly, splenomegaly
+- Ulceration with heavy drainage or secondary infection
+- B symptoms: fever, night sweats, weight loss (>10% body weight)
+- Difficulty with temperature regulation
+- Respiratory symptoms (lung involvement)
+- New skin ulceration or tumor formation
+
+================================================================================
+END OF DOCUMENT
+================================================================================
+
