@@ -3,7 +3,30 @@ Mappers to convert database models to API response formats
 Ensures consistent API contract across all diagnosis endpoints
 """
 from typing import Dict, List
-from app.infrastructure.database.models.diagnosis import Diagnosis
+
+
+def _format_relation(relation: str | None) -> str | None:
+    if not relation:
+        return None
+    return str(relation).replace("_", " ").title()
+
+
+def _owner_info(source: Dict) -> Dict:
+    family_member_id = source.get("family_member_id")
+    if family_member_id:
+        return {
+            "family_member_id": family_member_id,
+            "owner_type": "family_member",
+            "owner_name": source.get("family_member_name") or "Family Member",
+            "owner_relation": _format_relation(source.get("family_member_relation")),
+        }
+
+    return {
+        "family_member_id": None,
+        "owner_type": "self",
+        "owner_name": "Me",
+        "owner_relation": None,
+    }
 
 
 def map_to_create_response(service_result: Dict) -> Dict:
@@ -28,7 +51,8 @@ def map_to_create_response(service_result: Dict) -> Dict:
         ],
         "image_quality_score": service_result["image_quality"]["score"],
         "image_quality_label": service_result["image_quality"]["label"],
-        "analysis_id": service_result["diagnosis_id"]
+        "analysis_id": service_result["diagnosis_id"],
+        **_owner_info(service_result),
     }
 
 
@@ -49,7 +73,8 @@ def map_to_detail_response(diagnosis_dict: Dict) -> Dict:
         "all_predictions": diagnosis_dict["all_predictions"],
         "image_quality_score": diagnosis_dict["image_quality"]["score"],
         "image_quality_label": diagnosis_dict["image_quality"]["label"],
-        "created_at": diagnosis_dict["created_at"]
+        "created_at": diagnosis_dict["created_at"],
+        **_owner_info(diagnosis_dict),
     }
 
 
@@ -69,7 +94,8 @@ def map_to_history_item(diagnosis_dict: Dict) -> Dict:
         "confidence": diagnosis_dict["top_prediction"]["probability"],
         "image_quality_score": diagnosis_dict["image_quality"]["score"],
         "image_quality_label": diagnosis_dict["image_quality"]["label"],
-        "created_at": diagnosis_dict["created_at"]
+        "created_at": diagnosis_dict["created_at"],
+        **_owner_info(diagnosis_dict),
     }
 
 

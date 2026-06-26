@@ -143,6 +143,19 @@ const getQualityLabel = (label, language, t) => {
   return t.result?.qualityLabels?.[key] || rawLabel;
 };
 
+const relationLabel = (relation, isArabic) => {
+  if (!relation || relation === 'self') return null;
+  const key = String(relation).trim().toLowerCase();
+  const labels = {
+    spouse: isArabic ? 'زوج/زوجة' : 'Spouse',
+    child: isArabic ? 'طفل' : 'Child',
+    parent: isArabic ? 'والد/والدة' : 'Parent',
+    sibling: isArabic ? 'أخ/أخت' : 'Sibling',
+    other: isArabic ? 'آخر' : 'Other',
+  };
+  return labels[key] || relation;
+};
+
 const escapeHtml = (value) => String(value ?? '')
   .replace(/&/g, '&amp;')
   .replace(/</g, '&lt;')
@@ -210,6 +223,12 @@ const Result = () => {
             name: pred.disease_type,
             probability: Math.round((pred.probability || 0) * 100),
           })),
+          familyMemberId: data.family_member_id ?? null,
+          ownerType: data.owner_type || (data.family_member_id ? 'family_member' : 'self'),
+          ownerName: data.owner_name || 'Me',
+          ownerRelation: data.owner_relation || null,
+          patientName: data.owner_name || 'Me',
+          patientRelation: data.owner_relation || 'self',
         });
       } else {
         setLoadError(response.error || t.result?.loadFailed || 'Failed to load diagnosis report.');
@@ -273,6 +292,15 @@ const Result = () => {
     instructions: diseaseData.instructions,
   };
   const currentAnalysisId = analysisResult.analysisId || analysisId;
+  const isSelfOwner = !analysisResult.familyMemberId && analysisResult.ownerType !== 'family_member';
+  const ownerName = isSelfOwner
+    ? (isArabic ? 'نفسي' : 'Me')
+    : (analysisResult.ownerName || analysisResult.patientName || (isArabic ? 'فرد عائلة' : 'Family Member'));
+  const ownerRelation = relationLabel(
+    analysisResult.ownerRelation || analysisResult.patientRelation,
+    isArabic
+  );
+  const ownerText = ownerRelation ? `${ownerName} - ${ownerRelation}` : ownerName;
   const reportTitle = isArabic
     ? `${t.result?.diagnosisReport || 'تقرير التشخيص'} - ${report.disease}`
     : `${report.disease} ${t.result?.diagnosisReport || 'Diagnosis Report'}`;
@@ -447,6 +475,10 @@ const Result = () => {
                   <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-6 text-white/90 text-sm">
                     <span>{t.result?.reportId || 'Report ID:'} <strong>{report.reportId}</strong></span>
                     <span>{t.result?.date || 'Date:'} <strong>{report.date}</strong></span>
+                  </div>
+                  <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
+                    <span>{t.result?.analysisFor || 'Analysis for:'}</span>
+                    <strong>{ownerText}</strong>
                   </div>
                 </div>
                 <button onClick={handleDownload} disabled={isDownloading}

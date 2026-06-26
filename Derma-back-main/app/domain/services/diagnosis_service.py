@@ -31,6 +31,7 @@ class DiagnosisService:
         file_content: bytes,
         filename: str,
         user_id: int,
+        family_member_id: Optional[int] = None,
         top_k: int = 3
     ) -> Dict:
         session_id = str(uuid4())
@@ -54,6 +55,7 @@ class DiagnosisService:
 
             diagnosis_data = {
                 "user_id": user_id,
+                "family_member_id": family_member_id,
                 "session_id": session_id,
                 "image_path": str(file_path),
                 "image_quality_score": prediction_result["image_quality"]["score"],
@@ -76,6 +78,7 @@ class DiagnosisService:
             return {
                 "success": True,
                 "diagnosis_id": diagnosis.id,
+                "family_member_id": diagnosis.family_member_id,
                 "session_id": session_id,
                 "top_prediction": prediction_result["top_prediction"],
                 "all_predictions": prediction_result["all_predictions"],

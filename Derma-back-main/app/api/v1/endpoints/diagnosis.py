@@ -4,7 +4,9 @@ Diagnosis API endpoints
 import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status, Query
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status, Query
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.dependencies import get_current_user_id, get_diagnosis_service
 from app.api.v1.schemas.diagnosis_response import (
@@ -20,6 +22,8 @@ from app.api.v1.mappers import (
 from app.core.config import settings
 from app.core.exceptions import AppException
 from app.domain.services.diagnosis_service import DiagnosisService
+from app.infrastructure.database.models.family_member import FamilyMember
+from app.infrastructure.database.session import get_db
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +33,56 @@ MIME_TO_EXTENSION = {
     "image/jpeg": ".jpg",
     "image/png": ".png",
 }
+
+
+def _parse_family_member_id(raw_value: str | None) -> int | None:
+    if raw_value is None:
+        return None
+
+    normalized = str(raw_value).strip().lower()
+    if normalized in {"", "null", "none", "undefined", "self"}:
+        return None
+
+    try:
+        family_member_id = int(normalized)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid family member selected.",
+        ) from exc
+
+    if family_member_id <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid family member selected.",
+        )
+
+    return family_member_id
+
+
+async def _get_owned_family_member(
+    db: AsyncSession,
+    user_id: int,
+    family_member_id: int | None,
+) -> FamilyMember | None:
+    if family_member_id is None:
+        return None
+
+    result = await db.execute(
+        select(FamilyMember).where(
+            FamilyMember.id == family_member_id,
+            FamilyMember.user_id == user_id,
+        )
+    )
+    family_member = result.scalar_one_or_none()
+
+    if family_member is None:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid family member selected.",
+        )
+
+    return family_member
 
 
 @router.post(
@@ -42,6 +96,8 @@ async def diagnose_image(
     file: Annotated[UploadFile, File(description="Image file (JPG, JPEG, PNG)")],
     user_id: Annotated[int, Depends(get_current_user_id)],
     diagnosis_service: Annotated[DiagnosisService, Depends(get_diagnosis_service)],
+    db: Annotated[AsyncSession, Depends(get_db)],
+    family_member_id: Annotated[str | None, Form()] = None,
     top_k: int = settings.TOP_K_PREDICTIONS
 ) -> DiagnosisCreateResponse:
     try:
@@ -52,7 +108,18 @@ async def diagnose_image(
                 detail="Unsupported image type. Please upload a JPG or PNG image.",
             )
 
-        logger.info("Diagnosis request from user %s", user_id)
+        selected_family_member_id = _parse_family_member_id(family_member_id)
+        selected_family_member = await _get_owned_family_member(
+            db=db,
+            user_id=user_id,
+            family_member_id=selected_family_member_id,
+        )
+
+        logger.info(
+            "Diagnosis request from user %s for %s",
+            user_id,
+            f"family_member:{selected_family_member_id}" if selected_family_member_id else "self",
+        )
 
         file_content = await file.read(settings.MAX_UPLOAD_SIZE + 1)
         if len(file_content) > settings.MAX_UPLOAD_SIZE:
@@ -67,8 +134,13 @@ async def diagnose_image(
             file_content=file_content,
             filename=safe_filename,
             user_id=user_id,
+            family_member_id=selected_family_member_id,
             top_k=top_k
         )
+
+        if selected_family_member:
+            result["family_member_name"] = selected_family_member.name
+            result["family_member_relation"] = selected_family_member.relation
 
         response_data = map_to_create_response(result)
         return DiagnosisCreateResponse(**response_data)

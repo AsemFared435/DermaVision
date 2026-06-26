@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaFileAlt, FaTrash, FaEye, FaCalendar, FaFilter, FaExclamationTriangle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from '../hooks/useTranslation';
 import diagnosisService from '../services/diagnosisService';
+import familyService from '../services/familyService';
 import toast from 'react-hot-toast';
 
 // ===================== Skeleton Card =====================
@@ -61,10 +63,26 @@ const DeleteModal = ({ analysis, onConfirm, onCancel, isDeleting }) => (
   </div>
 );
 
+const getRelationLabel = (relation, isArabic) => {
+  if (!relation || relation === 'self') return null;
+  const key = String(relation).trim().toLowerCase();
+  const labels = {
+    spouse: isArabic ? 'زوج/زوجة' : 'Spouse',
+    child: isArabic ? 'طفل' : 'Child',
+    parent: isArabic ? 'والد/والدة' : 'Parent',
+    sibling: isArabic ? 'أخ/أخت' : 'Sibling',
+    other: isArabic ? 'آخر' : 'Other',
+  };
+  return labels[key] || relation;
+};
+
 // ===================== History Component =====================
 const History = () => {
   const { currentUser } = useAuth();
+  const { language } = useTranslation();
+  const isArabic = language === 'ar';
   const [analyses, setAnalyses] = useState([]);
+  const [familyMembers, setFamilyMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [deletingId, setDeletingId] = useState(null);
@@ -74,6 +92,7 @@ const History = () => {
   useEffect(() => {
     // ✅ امسح البيانات القديمة فوراً لما الـ user يتغير
     setAnalyses([]);
+    setFamilyMembers([]);
     setFilter('all');
     setDeleteModal(null);
     setRemovingId(null);
@@ -83,9 +102,21 @@ const History = () => {
       return;
     }
 
+    fetchFamilyMembers();
     fetchAnalyses();
   }, [currentUser?.id || currentUser?.uid]);
   // ✅ بنتابع الـ ID مش الـ object كله عشان مش كل render يعمل fetch
+
+  const fetchFamilyMembers = async () => {
+    try {
+      const response = await familyService.getMembers();
+      if (response.success) {
+        setFamilyMembers(response.data || []);
+      }
+    } catch {
+      setFamilyMembers([]);
+    }
+  };
 
   const fetchAnalyses = async () => {
     setLoading(true);
@@ -100,6 +131,10 @@ const History = () => {
           imageQuality: analysis.image_quality_score || 0,
           imageQualityLabel: analysis.image_quality_label || 'N/A',
           createdAt: analysis.created_at,
+          familyMemberId: analysis.family_member_id ?? null,
+          ownerType: analysis.owner_type || (analysis.family_member_id ? 'family_member' : 'self'),
+          ownerName: analysis.owner_name || (analysis.family_member_id ? 'Family Member' : 'Me'),
+          ownerRelation: analysis.owner_relation || null,
         }));
         setAnalyses(analysesData);
       } else {
@@ -153,14 +188,38 @@ const History = () => {
 
   const filteredAnalyses = analyses.filter((analysis) => {
     if (filter === 'all') return true;
-    const daysDiff = Math.floor((new Date() - new Date(analysis.createdAt)) / (1000 * 60 * 60 * 24));
-    if (filter === 'recent') return daysDiff <= 7;
-    if (filter === 'old') return daysDiff > 30;
+    if (filter === 'self') return !analysis.familyMemberId;
+    if (filter.startsWith('family:')) {
+      return String(analysis.familyMemberId) === filter.replace('family:', '');
+    }
     return true;
   });
 
+  const countForOwner = (key) => analyses.filter((analysis) => {
+    if (key === 'all') return true;
+    if (key === 'self') return !analysis.familyMemberId;
+    return String(analysis.familyMemberId) === key.replace('family:', '');
+  }).length;
+
+  const ownerFilterOptions = [
+    { key: 'all', label: isArabic ? 'الكل' : 'All' },
+    { key: 'self', label: isArabic ? 'نفسي' : 'Me' },
+    ...familyMembers.map((member) => ({
+      key: `family:${member.id}`,
+      label: member.name,
+    })),
+  ];
+
+  const getOwnerBadge = (analysis) => {
+    if (!analysis.familyMemberId && analysis.ownerType !== 'family_member') {
+      return isArabic ? 'نفسي' : 'Me';
+    }
+    const relation = getRelationLabel(analysis.ownerRelation, isArabic);
+    return relation ? `${analysis.ownerName} - ${relation}` : analysis.ownerName;
+  };
+
   return (
-    <div className="min-h-screen py-12 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div dir={isArabic ? 'rtl' : 'ltr'} className="min-h-screen py-12 bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {deleteModal && (
@@ -174,32 +233,34 @@ const History = () => {
 
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">Analysis History</h1>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+            {isArabic ? 'سجل التحليلات' : 'Analysis History'}
+          </h1>
           <p className="text-xl text-gray-600 dark:text-gray-400">
-            {currentUser ? `Your previous skin analyses` : 'Please login to view history'}
+            {currentUser
+              ? (isArabic ? 'تحليلات الجلد السابقة الخاصة بك وبأفراد العائلة' : 'Your previous skin analyses for you and family members')
+              : (isArabic ? 'يرجى تسجيل الدخول لعرض السجل' : 'Please login to view history')}
           </p>
         </div>
 
         {/* Filter Bar */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
               <FaFilter className="text-gray-500 dark:text-gray-400" />
-              <span className="font-semibold text-gray-700 dark:text-gray-300">Filter:</span>
+              <span className="font-semibold text-gray-700 dark:text-gray-300">
+                {isArabic ? 'تصفية حسب صاحب التحليل:' : 'Filter by owner:'}
+              </span>
             </div>
             <div className="flex flex-wrap gap-3">
-              {[
-                { key: 'all', label: `All (${analyses.length})` },
-                { key: 'recent', label: 'Last 7 days' },
-                { key: 'old', label: 'Older (30+ days)' },
-              ].map(f => (
+              {ownerFilterOptions.map(f => (
                 <button key={f.key} onClick={() => setFilter(f.key)}
                   className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
                     filter === f.key
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md scale-105'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}>
-                  {f.label}
+                  {f.label} ({countForOwner(f.key)})
                 </button>
               ))}
             </div>
@@ -216,13 +277,17 @@ const History = () => {
             <div className="w-24 h-24 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
               <FaFileAlt className="text-4xl text-gray-300 dark:text-gray-500" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No Analyses Found</h3>
+            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              {isArabic ? 'لا توجد تحليلات' : 'No Analyses Found'}
+            </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
-              {filter === 'all' ? "You haven't performed any analyses yet" : 'No analyses found for this filter'}
+              {filter === 'all'
+                ? (isArabic ? 'لم تقم بأي تحليلات بعد' : "You haven't performed any analyses yet")
+                : (isArabic ? 'لا توجد تحليلات لهذا الاختيار' : 'No analyses found for this owner')}
             </p>
             <Link to="/upload"
               className="inline-block px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold text-lg rounded-xl hover:shadow-xl hover:scale-105 transition-all">
-              Start Your First Analysis
+              {isArabic ? 'ابدأ أول تحليل' : 'Start Your First Analysis'}
             </Link>
           </div>
         ) : (
@@ -246,11 +311,17 @@ const History = () => {
                   <h3 className="text-lg font-bold text-gray-900 dark:text-white capitalize truncate mb-3">
                     {analysis.disease || 'Unknown'}
                   </h3>
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-black text-blue-700 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
+                    <span>{isArabic ? 'التحليل خاص بـ' : 'Analysis for'}</span>
+                    <span>{getOwnerBadge(analysis)}</span>
+                  </div>
 
                   {/* Confidence bar */}
                   <div className="mb-4">
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-gray-500 dark:text-gray-400 font-medium">Confidence</span>
+                      <span className="text-gray-500 dark:text-gray-400 font-medium">
+                        {isArabic ? 'الثقة' : 'Confidence'}
+                      </span>
                       <span className={`font-bold ${getProbColor(analysis.probability)}`}>{analysis.probability}%</span>
                     </div>
                     <div className="h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
@@ -260,9 +331,9 @@ const History = () => {
                   </div>
 
                   <div className="space-y-2 mb-5">
-                    <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                       <FaCalendar className="text-xs" />
-                      <span>{new Date(analysis.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                      <span>{new Date(analysis.createdAt).toLocaleDateString(isArabic ? 'ar-EG' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
                       <span className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-semibold border border-blue-100 dark:border-blue-800 capitalize">
@@ -275,7 +346,7 @@ const History = () => {
                   </div>
 
                   {/* Actions */}
-                  <div className="flex space-x-2">
+                  <div className="flex gap-2">
                     <Link to={`/result?id=${analysis.id}`}
                       state={{
                         analysisId: analysis.id,
@@ -285,11 +356,17 @@ const History = () => {
                           affectedArea: analysis.affectedArea,
                           imageQuality: analysis.imageQuality,
                           imageQualityLabel: analysis.imageQualityLabel,
+                          familyMemberId: analysis.familyMemberId,
+                          ownerType: analysis.ownerType,
+                          ownerName: analysis.ownerName,
+                          ownerRelation: analysis.ownerRelation,
+                          patientName: analysis.ownerName,
+                          patientRelation: analysis.ownerRelation || 'self',
                         }
                       }}
-                      className="flex-1 flex items-center justify-center space-x-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all font-semibold text-sm"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all font-semibold text-sm"
                     >
-                      <FaEye /><span>View Report</span>
+                      <FaEye /><span>{isArabic ? 'عرض التقرير' : 'View Report'}</span>
                     </Link>
                     <button onClick={() => handleDeleteClick(analysis)}
                       disabled={deletingId === analysis.id}

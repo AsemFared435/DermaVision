@@ -499,9 +499,15 @@ const Upload = () => {
     if (!currentUser) { toast.error(t.auth?.pleaseLogin || 'Please login'); navigate('/signin'); return; }
     setIsAnalyzing(true);
     try {
-      const response = await diagnosisService.uploadImage(selectedFile);
+      const selectedFamilyMemberId = selectedPatient?.id && selectedPatient.id !== 'self'
+        ? selectedPatient.id
+        : null;
+      const response = await diagnosisService.uploadImage(selectedFile, selectedFamilyMemberId);
       if (response.success) {
         const data = response.data;
+        const isSelfOwner = !selectedFamilyMemberId && data.owner_type !== 'family_member';
+        const ownerName = isSelfOwner ? selfLabel : (data.owner_name || selectedPatient?.name || selfLabel);
+        const ownerRelation = data.owner_relation || selectedPatient?.relation || 'self';
         const result = {
           analysisId: data.analysis_id,
           disease: data.predicted_label || 'Unknown',
@@ -512,8 +518,12 @@ const Upload = () => {
             name: pred.label, probability: Math.round((pred.confidence || 0) * 100)
           })),
           // ✅ Patient info
-          patientName: selectedPatient?.name || selfLabel,
-          patientRelation: selectedPatient?.relation || 'self',
+          familyMemberId: data.family_member_id ?? selectedFamilyMemberId,
+          ownerType: data.owner_type || (selectedFamilyMemberId ? 'family_member' : 'self'),
+          ownerName,
+          ownerRelation,
+          patientName: ownerName,
+          patientRelation: ownerRelation,
         };
         setAnalysisResult(result);
         setAnalysisComplete(true);
@@ -535,7 +545,7 @@ const Upload = () => {
       transferCroppedObjectUrlRef.current = true;
     }
     navigate('/result', {
-      state: { analysisResult, imageUrl: preview, description }
+      state: { analysisId: analysisResult?.analysisId, analysisResult, imageUrl: preview, description }
     });
   };
 

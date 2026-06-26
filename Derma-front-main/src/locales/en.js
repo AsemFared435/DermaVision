@@ -532,6 +532,7 @@ export const en = {
     downloadPdf: "Download PDF",
     preparing: "Preparing...",
     diagnosisResult: "AI Diagnosis Result",
+    analysisFor: "Analysis for:",
     loadingTitle: "Loading Report...",
     loadingText: "Please wait while we load your diagnosis report.",
     noAnalysisFound: "No Analysis Found",

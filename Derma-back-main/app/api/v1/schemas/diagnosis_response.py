@@ -21,6 +21,10 @@ class DiagnosisCreateResponse(BaseModel):
     image_quality_score: int = Field(..., ge=0, le=100, description="Image quality score (0-100)")
     image_quality_label: str = Field(..., description="Image quality label")
     analysis_id: int = Field(..., description="Diagnosis record ID")
+    family_member_id: Optional[int] = Field(None, description="Family member ID if analysis is for a family member")
+    owner_type: str = Field(..., description="Analysis owner type: self or family_member")
+    owner_name: str = Field(..., description="Analysis owner display name")
+    owner_relation: Optional[str] = Field(None, description="Family member relation if applicable")
     
     class Config:
         json_schema_extra = {
@@ -34,7 +38,11 @@ class DiagnosisCreateResponse(BaseModel):
                 ],
                 "image_quality_score": 85,
                 "image_quality_label": "Good",
-                "analysis_id": 123
+                "analysis_id": 123,
+                "family_member_id": None,
+                "owner_type": "self",
+                "owner_name": "Me",
+                "owner_relation": None
             }
         }
 
@@ -56,6 +64,10 @@ class DiagnosisDetailResponse(BaseModel):
     image_quality_score: int = Field(..., ge=0, le=100, description="Image quality score")
     image_quality_label: str = Field(..., description="Image quality label")
     created_at: str = Field(..., description="Creation timestamp (ISO format)")
+    family_member_id: Optional[int] = Field(None, description="Family member ID if analysis is for a family member")
+    owner_type: str = Field(..., description="Analysis owner type: self or family_member")
+    owner_name: str = Field(..., description="Analysis owner display name")
+    owner_relation: Optional[str] = Field(None, description="Family member relation if applicable")
     
     class Config:
         json_schema_extra = {
@@ -79,7 +91,11 @@ class DiagnosisDetailResponse(BaseModel):
                 ],
                 "image_quality_score": 85,
                 "image_quality_label": "Good",
-                "created_at": "2026-02-22T10:30:00Z"
+                "created_at": "2026-02-22T10:30:00Z",
+                "family_member_id": 2,
+                "owner_type": "family_member",
+                "owner_name": "Ahmed",
+                "owner_relation": "Sibling"
             }
         }
 
@@ -92,6 +108,10 @@ class DiagnosisHistoryItem(BaseModel):
     image_quality_score: int = Field(..., ge=0, le=100, description="Image quality score")
     image_quality_label: str = Field(..., description="Image quality label")
     created_at: str = Field(..., description="Creation timestamp (ISO format)")
+    family_member_id: Optional[int] = Field(None, description="Family member ID if analysis is for a family member")
+    owner_type: str = Field(..., description="Analysis owner type: self or family_member")
+    owner_name: str = Field(..., description="Analysis owner display name")
+    owner_relation: Optional[str] = Field(None, description="Family member relation if applicable")
     
     class Config:
         json_schema_extra = {
@@ -101,7 +121,11 @@ class DiagnosisHistoryItem(BaseModel):
                 "confidence": 0.92,
                 "image_quality_score": 85,
                 "image_quality_label": "Good",
-                "created_at": "2026-02-22T10:30:00Z"
+                "created_at": "2026-02-22T10:30:00Z",
+                "family_member_id": None,
+                "owner_type": "self",
+                "owner_name": "Me",
+                "owner_relation": None
             }
         }
 

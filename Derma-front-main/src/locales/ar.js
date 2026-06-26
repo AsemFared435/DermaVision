@@ -532,6 +532,7 @@ export const ar = {
     downloadPdf: "تحميل PDF",
     preparing: "جارٍ التجهيز...",
     diagnosisResult: "نتيجة التحليل الذكي",
+    analysisFor: "التحليل خاص بـ:",
     loadingTitle: "جارٍ تحميل التقرير...",
     loadingText: "يرجى الانتظار أثناء تحميل تقرير التحليل.",
     noAnalysisFound: "لم يتم العثور على تحليل",

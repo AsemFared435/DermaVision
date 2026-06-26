@@ -1,0 +1,129 @@
+DermaVision - Project Presentation Summary
+
+1. Project Overview
+- DermaVision is an AI-assisted dermatology web platform.
+- Users upload a skin image, receive a preliminary AI-based diagnosis, ask follow-up questions through a safe RAG chatbot, and generate reports for educational or consultation use.
+- The system is an assistive and educational tool only. It is not a final medical diagnosis, and dermatologist confirmation is required.
+
+2. Main User Flow
+- The user signs up or logs in.
+- The user uploads a JPG, JPEG, or PNG skin image.
+- The backend validates the image and runs the ML model.
+- The model predicts the skin condition, confidence, top predictions, and image quality score.
+- The user sees the diagnosis result and can download a preliminary/basic diagnosis report.
+- The user can chat with the assistant to ask about the disease, danger signs, contagion, general care, children/adults, and doctor visits.
+- After chatting, the user can generate a consultation report.
+- The user can view diagnosis history and previous reports.
+
+3. Architecture / Structure
+- Full-stack application with React/Vite frontend and FastAPI backend.
+- Backend follows Layered / Clean Architecture:
+  - API Layer: endpoints and request/response handling.
+  - Domain/Service Layer: business logic.
+  - Infrastructure Layer: database, ML model, RAG, email, and LLM providers.
+  - Database Layer: SQLAlchemy models and repository access.
+- Frontend is organized into pages, components, services, contexts, localization, and centralized API configuration.
+
+4. Design Patterns Used
+- Layered / Clean Architecture separates responsibilities clearly.
+- Service Layer Pattern handles business workflows.
+- Repository Pattern manages database access.
+- DTO / Mapper Pattern keeps API responses consistent.
+- Provider / Strategy Pattern switches between Groq, xAI, OpenAI, and local fallback.
+- Fallback / Resilience Pattern keeps the system working if an external LLM fails.
+- Centralized Configuration Pattern uses environment variables safely.
+
+5. AI Diagnosis
+- Uses an EfficientNet-B4 model with PyTorch/timm for backend inference.
+- Supported classes:
+  - Urticaria
+  - Tinea Circinata
+  - Annular Lichen / Lichen Planus
+  - Psoriasis
+  - Mycosis Fungoides / MF
+  - Healthy
+- Returns predicted label, confidence, top predictions, and image quality score.
+
+6. RAG Chatbot
+- RAG assistant is grounded in the local dermatology knowledge file skin_data1.txt.
+- Supports Arabic and English questions.
+- Handles multi-intent questions, such as:
+  - "What is my disease and is it dangerous?"
+  - "Is it contagious and what should I do?"
+- Can optionally use Groq, OpenAI, or xAI for natural language generation.
+- Includes a local deterministic fallback when no LLM provider is available or if a provider fails.
+- Sources can be shown in the UI.
+- Chat history is saved per diagnosis in browser session storage.
+
+7. Medical Safety Guardrails
+- The assistant does not provide personal prescriptions.
+- It does not provide exact dose, frequency, or duration instructions.
+- Urgent-care questions and dangerous symptoms are detected.
+- Deterministic disease safety profiles protect high-risk answers.
+- Urticaria is forced as non-contagious.
+- Tinea is forced as contagious.
+- Canonical disease names prevent wrong translations.
+- Unsafe LLM answers are rejected by post-generation validation.
+- Medical disclaimers are shown to users.
+
+8. Report System
+- Preliminary Report:
+  - Generated from the diagnosis result page.
+  - Downloadable/printable.
+  - Based on the AI diagnosis result and general guidance.
+- Consultation Report:
+  - Generated after chatbot conversation.
+  - Includes diagnosis context, patient concerns summary, general care guidance, red flags, and disclaimer.
+- Reports are not final medical diagnoses and are not personal treatment prescriptions.
+
+9. Security Features
+- JWT authentication protects private user features.
+- Protected endpoints require valid authentication.
+- User ownership checks prevent access to another user's diagnosis or report.
+- Passwords are hashed.
+- Password reset uses hashed, single-use, expiring tokens.
+- Upload validation allows JPG, JPEG, and PNG only, with a 10MB limit.
+- CORS configuration and security headers are included.
+- Secrets and API keys are loaded through backend environment variables only.
+- .env is ignored by Git, and .env.example contains placeholders only.
+
+10. Database
+- Uses SQLAlchemy async ORM with Alembic migrations.
+- SQLite is used for local/demo setup.
+- PostgreSQL is recommended for production.
+- Stores users, diagnosis records, family members, password reset tokens, and history.
+- Uploaded images and generated/cache files are kept out of Git.
+
+11. Frontend Features
+- React/Vite user interface.
+- Arabic and English localization.
+- RTL support for Arabic.
+- Auth pages for signup, login, forgot password, and reset password.
+- Upload page, result page, dashboard/history, and family member support.
+- RAG chat page with diagnosis-aware conversation.
+- Preliminary report download.
+- Consultation report modal with print and copy actions.
+- Dark medical UI design with responsive layout.
+
+12. DevOps / GitHub Readiness
+- Backend Dockerfile is available.
+- Frontend Dockerfile and nginx configuration are available.
+- docker-compose.yml can run the full project.
+- .dockerignore and .gitignore are configured.
+- README files are updated for setup and deployment.
+- Secrets and generated files are ignored.
+- Model weight note: the model file is around 67.7 MiB, so Git LFS is recommended for a polished public repository.
+
+13. What Makes the Project Strong
+- End-to-end full-stack AI workflow.
+- Real ML inference for skin image analysis.
+- RAG chatbot with medical safety controls.
+- Arabic/English support with RTL handling.
+- Clean architecture and clear design patterns.
+- Authentication, history, and family member support.
+- Preliminary and consultation report generation.
+- Docker and GitHub preparation.
+- Safe fallback when external LLM services are unavailable.
+
+14. Short Presentation Summary
+DermaVision is a full-stack AI-assisted dermatology system. It combines image-based skin disease prediction, secure user management, diagnosis history, a safe RAG medical assistant, and printable consultation reports. The backend follows layered clean architecture with service, repository, DTO, and provider strategy patterns. The system supports Arabic/English, Docker-based setup, and medical safety guardrails to ensure the output remains educational and not a personal prescription.

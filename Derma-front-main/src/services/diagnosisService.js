@@ -4,10 +4,19 @@ const diagnosisService = {
   /**
    * POST /api/v1/diagnosis
    */
-  uploadImage: async (file, onUploadProgress = null) => {
+  uploadImage: async (file, familyMemberId = null, onUploadProgress = null) => {
     try {
+      if (typeof familyMemberId === 'function') {
+        onUploadProgress = familyMemberId;
+        familyMemberId = null;
+      }
+
       const formData = new FormData();
       formData.append('file', file);
+      formData.append(
+        'family_member_id',
+        familyMemberId === null || familyMemberId === undefined ? 'null' : String(familyMemberId)
+      );
 
       const config = {
         headers: { 'Content-Type': 'multipart/form-data' },
@@ -92,6 +101,10 @@ const diagnosisService = {
       imageQualityLabel: data.image_quality_label || data.image_quality?.label || null,
       affectedArea: data.affected_area || 'N/A',
       createdAt: data.created_at || new Date().toISOString(),
+      familyMemberId: data.family_member_id ?? null,
+      ownerType: data.owner_type || (data.family_member_id ? 'family_member' : 'self'),
+      ownerName: data.owner_name || data.family_member_name || 'Me',
+      ownerRelation: data.owner_relation || data.family_member_relation || null,
     };
   },
 };

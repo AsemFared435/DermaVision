@@ -7,6 +7,7 @@ from typing import List, Optional
 
 from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from app.infrastructure.database.models.diagnosis import Diagnosis
 
@@ -41,7 +42,9 @@ class DiagnosisRepository:
     async def get_by_id(self, diagnosis_id: int) -> Optional[Diagnosis]:
         """Get diagnosis by ID"""
         result = await self.session.execute(
-            select(Diagnosis).where(Diagnosis.id == diagnosis_id)
+            select(Diagnosis)
+            .options(selectinload(Diagnosis.family_member))
+            .where(Diagnosis.id == diagnosis_id)
         )
         return result.scalar_one_or_none()
     
@@ -61,6 +64,7 @@ class DiagnosisRepository:
         """Get user's diagnosis history"""
         result = await self.session.execute(
             select(Diagnosis)
+            .options(selectinload(Diagnosis.family_member))
             .where(Diagnosis.user_id == user_id)
             .order_by(desc(Diagnosis.created_at))
             .limit(limit)

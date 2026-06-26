@@ -61,6 +61,7 @@ class Diagnosis(Base):
             "user_id": self.user_id,
             "family_member_id": self.family_member_id,  # ✅ جديد
             "family_member_name": self.family_member.name if self.family_member else None,  # ✅ جديد
+            "family_member_relation": self.family_member.relation if self.family_member else None,
             "session_id": self.session_id,
             "image_path": self.image_path,
             "image_quality": {
