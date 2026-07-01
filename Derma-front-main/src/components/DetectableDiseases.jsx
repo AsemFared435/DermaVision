@@ -442,7 +442,13 @@ const DetectableDiseases = () => {
   const [hovered, setHovered] = useState(null);
   const [selectedDisease, setSelectedDisease] = useState(null);
 
-  const diseases = t.detectableDiseases?.diseases || supportedDiseaseData.map(d => ({ en: d.name, ar: d.ar }));
+  const isHealthyCard = (disease) => {
+    const englishName = (disease?.en || disease?.name || '').toLowerCase();
+    return englishName.includes('healthy');
+  };
+  const displayDiseaseData = supportedDiseaseData.filter((disease) => !isHealthyCard(disease));
+  const diseases = (t.detectableDiseases?.diseases || supportedDiseaseData.map(d => ({ en: d.name, ar: d.ar })))
+    .filter((disease) => !isHealthyCard(disease));
   const modalLabels = t.detectableDiseases?.modalLabels || {};
 
   useEffect(() => {
@@ -485,14 +491,14 @@ const DetectableDiseases = () => {
             {t.detectableDiseases?.title || 'Detectable Skin Diseases'}
           </h2>
           <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-            {t.detectableDiseases?.subtitle || 'AI-assisted preliminary analysis for 6 supported skin classes'}
+            {t.detectableDiseases?.subtitle || 'AI-assisted preliminary analysis for the skin conditions supported by the current model.'}
           </p>
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 lg:gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-5">
           {diseases.map((disease, index) => {
-            const data = supportedDiseaseData[index] || supportedDiseaseData[0];
+            const data = displayDiseaseData[index] || displayDiseaseData[0];
             const isHovered = hovered === index;
             return (
               <button

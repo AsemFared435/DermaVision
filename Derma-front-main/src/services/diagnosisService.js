@@ -1,5 +1,10 @@
 import api from '../config/api';
 
+const normalizeConfidenceToPercent = (value) => {
+  const numeric = Number(value) || 0;
+  return numeric <= 1 ? Math.round(numeric * 100) : Math.round(numeric);
+};
+
 const diagnosisService = {
   /**
    * POST /api/v1/diagnosis
@@ -111,6 +116,7 @@ const diagnosisService = {
       id: data.analysis_id || data.id,
       topDisease: data.predicted_label || data.top_prediction?.disease_type || data.disease_type || 'Unknown',
       confidence: data.confidence ?? data.top_prediction?.probability ?? data.top_prediction?.confidence_percentage ?? 0,
+      confidencePercent: normalizeConfidenceToPercent(data.confidence ?? data.top_prediction?.probability ?? data.top_prediction?.confidence_percentage ?? 0),
       allPredictions: data.top_k || data.predictions || data.all_predictions || [],
       imageQuality: data.image_quality_score ?? data.image_quality ?? null,
       imageQualityLabel: data.image_quality_label || data.image_quality?.label || null,
@@ -120,6 +126,10 @@ const diagnosisService = {
       ownerType: data.owner_type || (data.family_member_id ? 'family_member' : 'self'),
       ownerName: data.owner_name || data.family_member_name || 'Me',
       ownerRelation: data.owner_relation || data.family_member_relation || null,
+      resultStatus: data.result_status || 'confident',
+      isUncertain: Boolean(data.is_uncertain) || (data.is_uncertain === undefined && normalizeConfidenceToPercent(data.confidence ?? data.top_prediction?.probability ?? data.top_prediction?.confidence_percentage ?? 0) < 60),
+      uncertaintyReasons: data.uncertainty_reasons || [],
+      userMessage: data.user_message || null,
     };
   },
 };

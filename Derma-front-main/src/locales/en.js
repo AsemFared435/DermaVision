@@ -96,7 +96,7 @@ export const en = {
 
   detectableDiseases: {
     title: "Supported Skin Conditions",
-    subtitle: "AI-assisted preliminary analysis for the 6 classes supported by the current model",
+    subtitle: "AI-assisted preliminary analysis for the skin conditions supported by the current model.",
     badge: "Supported Model Classes",
     cardLabel: "Supported class",
     ctaText: "Results are preliminary and should be reviewed with a dermatologist for medical diagnosis.",

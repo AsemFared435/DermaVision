@@ -11,6 +11,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import toast from 'react-hot-toast';
 import diagnosisService from '../services/diagnosisService';
 import familyService from '../services/familyService';
+import { getUncertaintyMessage, getUncertaintyReasonLabel, getUncertaintyReasons } from '../utils/uncertainty';
 
 // ===================== Step Progress Bar =====================
 const StepProgressBar = ({ currentStep }) => {
@@ -61,6 +62,11 @@ const StepProgressBar = ({ currentStep }) => {
       ))}
     </div>
   );
+};
+
+const confidenceToPercent = (value) => {
+  const numeric = Number(value) || 0;
+  return numeric <= 1 ? Math.round(numeric * 100) : Math.round(numeric);
 };
 
 // ===================== Patient Selector =====================
@@ -192,8 +198,8 @@ const PatientSelector = ({ members, selected, onSelect, loading, onDeleteMember,
 };
 
 const RemoveFamilyMemberModal = ({ member, onConfirm, onCancel, isDeleting, isArabic }) => createPortal(
-  <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm">
-    <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-gray-800">
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm">
+    <div className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white shadow-2xl dark:bg-gray-800">
       <div className="h-1.5 bg-gradient-to-r from-red-500 to-rose-500" />
       <div className="p-7 text-center">
         <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
@@ -290,10 +296,23 @@ const CropTool = ({ imageSrc, onCropDone, onCancel }) => {
   const HANDLE_SIZE = 10;
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const previousDocumentOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousDocumentOverflow;
+    };
+  }, []);
+
+  useEffect(() => {
     const img = new Image();
     img.onload = () => {
       setNaturalSize({ w: img.naturalWidth, h: img.naturalHeight });
-      const maxW = 460; const maxH = 340;
+      const maxW = Math.min(460, Math.max(260, window.innerWidth - 48));
+      const maxH = Math.min(340, Math.max(220, window.innerHeight - 280));
       const ratio = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight);
       const dw = Math.round(img.naturalWidth * ratio);
       const dh = Math.round(img.naturalHeight * ratio);
@@ -388,9 +407,9 @@ const CropTool = ({ imageSrc, onCropDone, onCancel }) => {
     { id: 'rc', style: { right: -5, top: '50%', transform: 'translateY(-50%)', cursor: 'e-resize' } },
   ];
 
-  return (
-    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-3 backdrop-blur-md sm:p-4">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white shadow-2xl dark:bg-gray-900">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -409,7 +428,7 @@ const CropTool = ({ imageSrc, onCropDone, onCancel }) => {
             <strong>{t.upload?.cropModal?.tipLabel || 'Tip'}:</strong> {t.upload?.cropModal?.tipText || 'Drag corners to resize. Drag inside to move. Focus on affected area only.'}
           </p>
         </div>
-        <div className="flex items-center justify-center p-6">
+        <div className="flex items-center justify-center overflow-x-auto p-4 sm:p-6">
           {!imgLoaded ? (
             <div className="flex items-center justify-center h-64 w-full">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
@@ -440,12 +459,12 @@ const CropTool = ({ imageSrc, onCropDone, onCancel }) => {
             </div>
           )}
         </div>
-        <div className="flex items-center justify-between px-6 pb-6 gap-3">
+        <div className="flex flex-col gap-3 px-6 pb-6 sm:flex-row sm:items-center sm:justify-between">
           <button onClick={() => setCropBox({ x: Math.round(displaySize.w * 0.1), y: Math.round(displaySize.h * 0.1), w: Math.round(displaySize.w * 0.8), h: Math.round(displaySize.h * 0.8) })}
             className="flex items-center gap-2 px-4 py-2.5 border-2 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-xl hover:border-blue-400 transition-all text-sm font-semibold">
             <FaUndo className="text-xs" /><span>{t.upload?.cropModal?.reset || 'Reset'}</span>
           </button>
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3 sm:flex-row">
             <button onClick={onCancel} className="px-5 py-2.5 border-2 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 rounded-xl hover:border-gray-400 transition-all text-sm font-semibold">
               {t.upload?.cropModal?.useOriginal || 'Use Original'}
             </button>
@@ -455,7 +474,8 @@ const CropTool = ({ imageSrc, onCropDone, onCancel }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
@@ -525,10 +545,13 @@ const Upload = () => {
     if (!deleteFamilyModal) return undefined;
 
     const previousOverflow = document.body.style.overflow;
+    const previousDocumentOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousDocumentOverflow;
     };
   }, [deleteFamilyModal]);
 
@@ -602,14 +625,17 @@ const Upload = () => {
         const isSelfOwner = !selectedFamilyMemberId && data.owner_type !== 'family_member';
         const ownerName = isSelfOwner ? selfLabel : (data.owner_name || selectedPatient?.name || selfLabel);
         const ownerRelation = data.owner_relation || selectedPatient?.relation || 'self';
+        const probability = confidenceToPercent(data.confidence);
+        const isUncertain = Boolean(data.is_uncertain) || (data.is_uncertain === undefined && probability < 60);
+        const uncertaintyReasons = getUncertaintyReasons(data.uncertainty_reasons || [], probability);
         const result = {
           analysisId: data.analysis_id,
           disease: data.predicted_label || 'Unknown',
-          probability: Math.round((data.confidence || 0) * 100),
+          probability,
           imageQuality: Math.round(data.image_quality_score || 0),
           imageQualityLabel: data.image_quality_label || 'Unknown',
           secondaryDiseases: (data.top_k || []).slice(1).map(pred => ({
-            name: pred.label, probability: Math.round((pred.confidence || 0) * 100)
+            name: pred.label, probability: confidenceToPercent(pred.confidence)
           })),
           // ✅ Patient info
           familyMemberId: data.family_member_id ?? selectedFamilyMemberId,
@@ -618,6 +644,12 @@ const Upload = () => {
           ownerRelation,
           patientName: ownerName,
           patientRelation: ownerRelation,
+          resultStatus: data.result_status || 'confident',
+          isUncertain,
+          uncertaintyReasons,
+          userMessage: uncertaintyReasons.length > 0
+            ? getUncertaintyMessage(uncertaintyReasons, isArabic)
+            : (data.user_message || getUncertaintyMessage(uncertaintyReasons, isArabic)),
         };
         setAnalysisResult(result);
         setAnalysisComplete(true);
@@ -939,11 +971,38 @@ const Upload = () => {
                         </div>
                       </div>
 
+                      {(analysisResult.isUncertain || analysisResult.resultStatus === 'uncertain' || analysisResult.probability < 60) && (
+                        <div className="rounded-xl border-2 border-yellow-300 bg-yellow-50 p-4 dark:border-yellow-700 dark:bg-yellow-900/20">
+                          <div className="mb-2 flex items-center gap-2">
+                            <FaExclamationTriangle className="text-yellow-600 dark:text-yellow-400" />
+                            <span className="text-sm font-black text-yellow-900 dark:text-yellow-100">
+                              {isArabic ? 'نتيجة غير مؤكدة' : 'Uncertain Result'}
+                            </span>
+                          </div>
+                          <p className="text-sm font-semibold leading-relaxed text-yellow-900 dark:text-yellow-100">
+                            {getUncertaintyReasons(analysisResult.uncertaintyReasons || [], analysisResult.probability).length > 0
+                              ? getUncertaintyMessage(getUncertaintyReasons(analysisResult.uncertaintyReasons || [], analysisResult.probability), isArabic)
+                              : (analysisResult.userMessage || getUncertaintyMessage([], isArabic))}
+                          </p>
+                          <div className="mt-3 flex flex-wrap gap-2">
+                            {getUncertaintyReasons(analysisResult.uncertaintyReasons || [], analysisResult.probability).map((reason) => (
+                              <span key={reason} className="rounded-full bg-yellow-200 px-2.5 py-1 text-xs font-bold text-yellow-900 dark:bg-yellow-800/60 dark:text-yellow-100">
+                                {getUncertaintyReasonLabel(reason, isArabic)}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Primary Disease */}
                       <div className={`p-5 bg-gradient-to-br ${getProbabilityBg(analysisResult.probability)} rounded-xl border-2`}>
                         <div className="flex items-center justify-between mb-3">
                           <span className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{t.upload?.primaryDiagnosis || 'Primary Diagnosis'}</span>
-                          <span className="px-2.5 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full shadow-sm">{t.upload?.topMatch || '#1 Match'}</span>
+                          <span className="px-2.5 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-bold rounded-full shadow-sm">
+                            {(analysisResult.isUncertain || analysisResult.resultStatus === 'uncertain' || analysisResult.probability < 60)
+                              ? (isArabic ? 'غير مؤكد' : 'Uncertain')
+                              : (t.upload?.topMatch || '#1 Match')}
+                          </span>
                         </div>
                         <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-3 capitalize">{analysisResult.disease}</h3>
                         <div className="flex items-center gap-3">

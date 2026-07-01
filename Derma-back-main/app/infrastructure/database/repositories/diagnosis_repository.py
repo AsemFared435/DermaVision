@@ -22,16 +22,18 @@ class DiagnosisRepository:
     
     async def create(self, data: dict) -> Diagnosis:
         """Create new diagnosis record"""
+        db_data = data.copy()
+
         # Convert all_predictions to JSON string
-        if "all_predictions" in data and isinstance(data["all_predictions"], list):
-            data["all_predictions"] = json.dumps(data["all_predictions"])
+        if "all_predictions" in db_data and isinstance(db_data["all_predictions"], list):
+            db_data["all_predictions"] = json.dumps(db_data["all_predictions"])
         
         # Convert metadata to JSON string
-        if "metadata" in data and isinstance(data["metadata"], dict):
-            data["extra_metadata"] = json.dumps(data["metadata"])
-            del data["metadata"]
+        if "metadata" in db_data and isinstance(db_data["metadata"], dict):
+            db_data["extra_metadata"] = json.dumps(db_data["metadata"])
+            del db_data["metadata"]
         
-        diagnosis = Diagnosis(**data)
+        diagnosis = Diagnosis(**db_data)
         self.session.add(diagnosis)
         await self.session.commit()
         await self.session.refresh(diagnosis)

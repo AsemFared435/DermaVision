@@ -25,6 +25,10 @@ class DiagnosisCreateResponse(BaseModel):
     owner_type: str = Field(..., description="Analysis owner type: self or family_member")
     owner_name: str = Field(..., description="Analysis owner display name")
     owner_relation: Optional[str] = Field(None, description="Family member relation if applicable")
+    result_status: str = Field("confident", description="Post-processed result status: confident or uncertain")
+    is_uncertain: bool = Field(False, description="Whether post-processing flagged the result as uncertain")
+    uncertainty_reasons: List[str] = Field(default_factory=list, description="Reasons for uncertainty")
+    user_message: Optional[str] = Field(None, description="Friendly warning message if result is uncertain")
     
     class Config:
         json_schema_extra = {
@@ -42,7 +46,11 @@ class DiagnosisCreateResponse(BaseModel):
                 "family_member_id": None,
                 "owner_type": "self",
                 "owner_name": "Me",
-                "owner_relation": None
+                "owner_relation": None,
+                "result_status": "confident",
+                "is_uncertain": False,
+                "uncertainty_reasons": [],
+                "user_message": None
             }
         }
 
@@ -68,6 +76,10 @@ class DiagnosisDetailResponse(BaseModel):
     owner_type: str = Field(..., description="Analysis owner type: self or family_member")
     owner_name: str = Field(..., description="Analysis owner display name")
     owner_relation: Optional[str] = Field(None, description="Family member relation if applicable")
+    result_status: str = Field("confident", description="Post-processed result status: confident or uncertain")
+    is_uncertain: bool = Field(False, description="Whether post-processing flagged the result as uncertain")
+    uncertainty_reasons: List[str] = Field(default_factory=list, description="Reasons for uncertainty")
+    user_message: Optional[str] = Field(None, description="Friendly warning message if result is uncertain")
     
     class Config:
         json_schema_extra = {
@@ -95,7 +107,11 @@ class DiagnosisDetailResponse(BaseModel):
                 "family_member_id": 2,
                 "owner_type": "family_member",
                 "owner_name": "Ahmed",
-                "owner_relation": "Sibling"
+                "owner_relation": "Sibling",
+                "result_status": "confident",
+                "is_uncertain": False,
+                "uncertainty_reasons": [],
+                "user_message": None
             }
         }
 
@@ -112,6 +128,10 @@ class DiagnosisHistoryItem(BaseModel):
     owner_type: str = Field(..., description="Analysis owner type: self or family_member")
     owner_name: str = Field(..., description="Analysis owner display name")
     owner_relation: Optional[str] = Field(None, description="Family member relation if applicable")
+    result_status: str = Field("confident", description="Post-processed result status: confident or uncertain")
+    is_uncertain: bool = Field(False, description="Whether post-processing flagged the result as uncertain")
+    uncertainty_reasons: List[str] = Field(default_factory=list, description="Reasons for uncertainty")
+    user_message: Optional[str] = Field(None, description="Friendly warning message if result is uncertain")
     
     class Config:
         json_schema_extra = {
@@ -125,7 +145,11 @@ class DiagnosisHistoryItem(BaseModel):
                 "family_member_id": None,
                 "owner_type": "self",
                 "owner_name": "Me",
-                "owner_relation": None
+                "owner_relation": None,
+                "result_status": "confident",
+                "is_uncertain": False,
+                "uncertainty_reasons": [],
+                "user_message": None
             }
         }
 

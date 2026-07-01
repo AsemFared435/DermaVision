@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 
 // ===================== Delete Confirmation =====================
 const DeleteModal = ({ member, onConfirm, onCancel, isDeleting }) => createPortal(
-  <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+  <div className="fixed inset-0 z-[9999] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
       <div className="h-1 bg-gradient-to-r from-red-500 to-rose-500"></div>
       <div className="p-6 text-center">
@@ -47,7 +47,7 @@ const MemberForm = ({ initial, onSave, onCancel, isSaving }) => {
     name: initial?.name || '',
     relation: initial?.relation || 'child',
     date_of_birth: initial?.date_of_birth || '',
-    gender: initial?.gender || '',
+    gender: ['male', 'female'].includes(initial?.gender) ? initial.gender : '',
     notes: initial?.notes || '',
   });
 
@@ -58,7 +58,7 @@ const MemberForm = ({ initial, onSave, onCancel, isSaving }) => {
       name: form.name.trim(),
       relation: form.relation,
       date_of_birth: form.date_of_birth || null,
-      gender: form.gender || null,
+      gender: ['male', 'female'].includes(form.gender) ? form.gender : null,
       notes: form.notes.trim() || null,
     };
     onSave(payload);
@@ -129,7 +129,6 @@ const MemberForm = ({ initial, onSave, onCancel, isSaving }) => {
             <option value="">Select</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
-            <option value="other">Other</option>
           </select>
         </div>
       </div>
@@ -183,6 +182,7 @@ const MemberCard = ({ member, onEdit, onDelete, isRemoving }) => {
   const age = member.date_of_birth
     ? Math.floor((new Date() - new Date(member.date_of_birth)) / (365.25 * 24 * 60 * 60 * 1000))
     : null;
+  const displayGender = ['male', 'female'].includes(member.gender) ? member.gender : null;
 
   return (
     <div className={`p-4 rounded-2xl border-2 transition-all duration-300 ${
@@ -196,7 +196,7 @@ const MemberCard = ({ member, onEdit, onDelete, isRemoving }) => {
             <div className="flex items-center space-x-2 mt-0.5">
               <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 capitalize">{rel.label}</span>
               {age !== null && <span className="text-xs text-gray-400">• {age}y</span>}
-              {member.gender && <span className="text-xs text-gray-400 capitalize">• {member.gender}</span>}
+              {displayGender && <span className="text-xs text-gray-400 capitalize">• {displayGender}</span>}
             </div>
             {member.notes && (
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 max-w-[180px] truncate" title={member.notes}>
@@ -237,10 +237,13 @@ const FamilyManager = () => {
     if (!deleteModal) return undefined;
 
     const previousOverflow = document.body.style.overflow;
+    const previousDocumentOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
     return () => {
       document.body.style.overflow = previousOverflow;
+      document.documentElement.style.overflow = previousDocumentOverflow;
     };
   }, [deleteModal]);
 
@@ -301,7 +304,7 @@ const FamilyManager = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-visible">
 
       {deleteModal && (
         <DeleteModal
@@ -334,7 +337,7 @@ const FamilyManager = () => {
       <div className="p-6">
         {/* Add/Edit Form */}
         {(showForm || editingMember) && (
-          <div className="mb-6 p-5 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-700 rounded-2xl">
+          <div className="mb-6 max-h-[80vh] overflow-y-auto p-5 bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-700 rounded-2xl">
             <h3 className="font-bold text-gray-900 dark:text-white mb-4 flex items-center space-x-2">
               <span>{editingMember ? '✏️ Edit Member' : '➕ Add New Member'}</span>
             </h3>

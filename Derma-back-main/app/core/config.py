@@ -73,6 +73,9 @@ class Settings(BaseSettings):
     MODEL_WARMUP: bool = True  # Enable warmup for testing
     PREDICTION_BATCH_SIZE: int = 1
     TOP_K_PREDICTIONS: int = 3
+    DIAGNOSIS_MIN_CONFIDENCE: float = 0.60
+    DIAGNOSIS_MIN_TOP2_MARGIN: float = 0.15
+    DIAGNOSIS_MIN_IMAGE_QUALITY_SCORE: int = 50
     
     # Logging
     LOG_LEVEL: str = "INFO"

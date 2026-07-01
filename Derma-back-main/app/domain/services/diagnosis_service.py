@@ -5,6 +5,7 @@ import logging
 from typing import Dict, Optional
 from uuid import uuid4
 
+from app.core.config import settings
 from app.core.exceptions import ValidationError
 from app.domain.services.file_service import FileService
 from app.infrastructure.database.repositories.diagnosis_repository import DiagnosisRepository
@@ -53,6 +54,13 @@ class DiagnosisService:
             if not prediction_result.get("success"):
                 raise ValidationError("Prediction failed", details=prediction_result)
 
+            uncertainty = self._evaluate_uncertainty(prediction_result)
+            metadata = {
+                **(prediction_result.get("metadata") or {}),
+                "uncertainty": uncertainty,
+            }
+            diagnosis_created = False
+
             diagnosis_data = {
                 "user_id": user_id,
                 "family_member_id": family_member_id,
@@ -64,10 +72,11 @@ class DiagnosisService:
                 "probability": prediction_result["top_prediction"]["probability"],
                 "confidence_percentage": prediction_result["top_prediction"]["confidence_percentage"],
                 "all_predictions": prediction_result["all_predictions"],
-                "metadata": prediction_result.get("metadata", {})
+                "metadata": metadata,
             }
 
             diagnosis = await self.diagnosis_repo.create(diagnosis_data)
+            diagnosis_created = True
 
             logger.info(
                 f"Diagnosis created: ID={diagnosis.id}, "
@@ -83,12 +92,14 @@ class DiagnosisService:
                 "top_prediction": prediction_result["top_prediction"],
                 "all_predictions": prediction_result["all_predictions"],
                 "image_quality": prediction_result["image_quality"],
+                "metadata": metadata,
+                **uncertainty,
                 "created_at": diagnosis.created_at
             }
 
         except Exception as e:
             logger.error(f"Diagnosis creation failed: {e}", exc_info=True)
-            if 'file_path' in locals():
+            if 'file_path' in locals() and not locals().get("diagnosis_created", False):
                 await self.file_service.delete_file(file_path)
             raise
 
@@ -164,3 +175,102 @@ class DiagnosisService:
         deleted_count = await self.diagnosis_repo.delete_by_user(user_id)
         logger.info("Deleted all diagnoses for user %s: count=%s", user_id, deleted_count)
         return deleted_count
+
+    def _evaluate_uncertainty(self, prediction_result: Dict) -> Dict:
+        """Flag low-certainty closed-set predictions without changing raw model output."""
+        predictions = prediction_result.get("all_predictions") or []
+        top1 = predictions[0] if predictions else prediction_result.get("top_prediction", {})
+        top2 = predictions[1] if len(predictions) > 1 else {}
+
+        top1_confidence = self._normalize_confidence(
+            top1.get("probability")
+            or top1.get("confidence")
+            or top1.get("confidence_percentage")
+            or 0.0
+        )
+        top2_confidence = self._normalize_confidence(
+            top2.get("probability")
+            or top2.get("confidence")
+            or top2.get("confidence_percentage")
+            or 0.0
+        )
+        top2_margin = top1_confidence - top2_confidence
+        image_quality_score = int((prediction_result.get("image_quality") or {}).get("score") or 0)
+
+        reasons: list[str] = []
+        if top1_confidence < settings.DIAGNOSIS_MIN_CONFIDENCE:
+            reasons.append("low_confidence")
+        if top2 and top2_margin < settings.DIAGNOSIS_MIN_TOP2_MARGIN:
+            reasons.append("ambiguous_prediction")
+        if image_quality_score < settings.DIAGNOSIS_MIN_IMAGE_QUALITY_SCORE:
+            reasons.append("poor_image_quality")
+
+        is_uncertain = bool(reasons)
+        user_message = self._build_uncertainty_message(reasons) if is_uncertain else None
+
+        return {
+            "result_status": "uncertain" if is_uncertain else "confident",
+            "is_uncertain": is_uncertain,
+            "uncertainty_reasons": reasons,
+            "user_message": user_message,
+            "top1_label": top1.get("disease_type"),
+            "top1_confidence": top1_confidence,
+            "top2_label": top2.get("disease_type"),
+            "top2_confidence": top2_confidence if top2 else None,
+            "top2_margin": top2_margin if top2 else None,
+            "uncertainty_thresholds": {
+                "min_confidence": settings.DIAGNOSIS_MIN_CONFIDENCE,
+                "min_top2_margin": settings.DIAGNOSIS_MIN_TOP2_MARGIN,
+                "min_image_quality_score": settings.DIAGNOSIS_MIN_IMAGE_QUALITY_SCORE,
+            },
+        }
+
+    @staticmethod
+    def _normalize_confidence(value) -> float:
+        """Normalize confidence from either 0..1 or 0..100 into 0..1."""
+        try:
+            confidence = float(value)
+        except (TypeError, ValueError):
+            return 0.0
+
+        if confidence > 1.0:
+            confidence = confidence / 100.0
+
+        return max(0.0, min(confidence, 1.0))
+
+    @staticmethod
+    def _build_uncertainty_message(reasons: list[str]) -> str:
+        reason_set = set(reasons)
+        has_poor_quality = "poor_image_quality" in reason_set
+        has_low_confidence = "low_confidence" in reason_set
+        has_ambiguous = "ambiguous_prediction" in reason_set
+
+        if has_poor_quality and len(reason_set) == 1:
+            return (
+                "The result is uncertain because the uploaded image quality is low. "
+                "Please upload a clearer, well-lit skin image and try again."
+            )
+        if has_poor_quality:
+            return (
+                "The result is uncertain because the image quality is low and the model prediction is not confident. "
+                "Please upload a clearer skin image. If the issue remains, consult a dermatologist."
+            )
+        if has_low_confidence and has_ambiguous:
+            return (
+                "The result is uncertain because the model confidence is low and the top predictions are close to each other. "
+                "This may indicate an ambiguous case or a disease outside the supported model classes. "
+                "Please consult a dermatologist."
+            )
+        if has_low_confidence:
+            return (
+                "The result is uncertain because the model confidence is low. "
+                "This case may not be clearly supported by the current model classes. "
+                "Please consult a dermatologist."
+            )
+        if has_ambiguous:
+            return (
+                "The result is uncertain because the top predictions are close to each other. "
+                "The case may be ambiguous or outside the supported diseases. "
+                "Please consult a dermatologist."
+            )
+        return "The result is uncertain. Please consult a dermatologist."

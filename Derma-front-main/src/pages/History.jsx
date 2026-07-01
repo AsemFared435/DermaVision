@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useTranslation } from '../hooks/useTranslation';
 import diagnosisService from '../services/diagnosisService';
 import familyService from '../services/familyService';
+import { getUncertaintyMessage, getUncertaintyReasons } from '../utils/uncertainty';
 import toast from 'react-hot-toast';
 
 // ===================== Skeleton Card =====================
@@ -122,6 +123,11 @@ const getRelationLabel = (relation, isArabic) => {
   return labels[key] || relation;
 };
 
+const confidenceToPercent = (value) => {
+  const numeric = Number(value) || 0;
+  return numeric <= 1 ? Math.round(numeric * 100) : Math.round(numeric);
+};
+
 // ===================== History Component =====================
 const History = () => {
   const { currentUser } = useAuth();
@@ -198,19 +204,30 @@ const History = () => {
     try {
       const response = await diagnosisService.getHistory(100);
       if (response.success) {
-        const analysesData = (response.data.analyses || []).map((analysis) => ({
-          id: analysis.id,
-          disease: analysis.predicted_label || 'Unknown',
-          probability: Math.round((analysis.confidence || 0) * 100),
-          affectedArea: analysis.predicted_label || 'N/A',
-          imageQuality: analysis.image_quality_score || 0,
-          imageQualityLabel: analysis.image_quality_label || 'N/A',
-          createdAt: analysis.created_at,
-          familyMemberId: analysis.family_member_id ?? null,
-          ownerType: analysis.owner_type || (analysis.family_member_id ? 'family_member' : 'self'),
-          ownerName: analysis.owner_name || (analysis.family_member_id ? 'Family Member' : 'Me'),
-          ownerRelation: analysis.owner_relation || null,
-        }));
+        const analysesData = (response.data.analyses || []).map((analysis) => {
+          const probability = confidenceToPercent(analysis.confidence);
+          const isUncertain = Boolean(analysis.is_uncertain) || (analysis.is_uncertain === undefined && probability < 60);
+          const uncertaintyReasons = getUncertaintyReasons(analysis.uncertainty_reasons || [], probability);
+          return {
+            id: analysis.id,
+            disease: analysis.predicted_label || 'Unknown',
+            probability,
+            affectedArea: analysis.predicted_label || 'N/A',
+            imageQuality: analysis.image_quality_score || 0,
+            imageQualityLabel: analysis.image_quality_label || 'N/A',
+            createdAt: analysis.created_at,
+            familyMemberId: analysis.family_member_id ?? null,
+            ownerType: analysis.owner_type || (analysis.family_member_id ? 'family_member' : 'self'),
+            ownerName: analysis.owner_name || (analysis.family_member_id ? 'Family Member' : 'Me'),
+            ownerRelation: analysis.owner_relation || null,
+            resultStatus: analysis.result_status || 'confident',
+            isUncertain,
+            uncertaintyReasons,
+            userMessage: uncertaintyReasons.length > 0
+              ? getUncertaintyMessage(uncertaintyReasons, isArabic)
+              : (analysis.user_message || getUncertaintyMessage(uncertaintyReasons, isArabic)),
+          };
+        });
         setAnalyses(analysesData);
       } else {
         toast.error(response.error);
@@ -431,6 +448,12 @@ const History = () => {
                     <span>{isArabic ? 'التحليل خاص بـ' : 'Analysis for'}</span>
                     <span>{getOwnerBadge(analysis)}</span>
                   </div>
+                  {analysis.isUncertain && (
+                    <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-yellow-200 bg-yellow-50 px-3 py-1.5 text-xs font-black text-yellow-700 dark:border-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
+                      <FaExclamationTriangle className="text-xs" />
+                      <span>{isArabic ? 'نتيجة غير مؤكدة' : 'Uncertain'}</span>
+                    </div>
+                  )}
 
                   {/* Confidence bar */}
                   <div className="mb-4">
@@ -478,6 +501,10 @@ const History = () => {
                           ownerRelation: analysis.ownerRelation,
                           patientName: analysis.ownerName,
                           patientRelation: analysis.ownerRelation || 'self',
+                          resultStatus: analysis.resultStatus,
+                          isUncertain: analysis.isUncertain,
+                          uncertaintyReasons: analysis.uncertaintyReasons,
+                          userMessage: analysis.userMessage,
                         }
                       }}
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:shadow-lg hover:scale-[1.02] transition-all font-semibold text-sm"
