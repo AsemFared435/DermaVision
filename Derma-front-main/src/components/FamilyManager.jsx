@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { FaPlus, FaTrash, FaEdit, FaCheck, FaTimes, FaUsers, FaExclamationTriangle } from 'react-icons/fa';
 import familyService from '../services/familyService';
 import toast from 'react-hot-toast';
 
 // ===================== Delete Confirmation =====================
-const DeleteModal = ({ member, onConfirm, onCancel, isDeleting }) => (
-  <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+const DeleteModal = ({ member, onConfirm, onCancel, isDeleting }) => createPortal(
+  <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
       <div className="h-1 bg-gradient-to-r from-red-500 to-rose-500"></div>
       <div className="p-6 text-center">
         <div className="w-14 h-14 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
           <FaExclamationTriangle className="text-red-500 text-xl" />
         </div>
         <h3 className="text-lg font-black text-gray-900 dark:text-white mb-2">Remove Member?</h3>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mb-1">This will remove:</p>
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+          Are you sure you want to remove this family member? This will also delete all diagnosis records related to this member.
+        </p>
         <div className="inline-flex items-center space-x-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-xl mb-4">
           <span className="text-xl">{familyService.getRelationInfo(member?.relation)?.icon}</span>
           <span className="font-bold text-gray-800 dark:text-gray-200">{member?.name}</span>
         </div>
-        <p className="text-xs text-red-500 mb-5">⚠️ Their diagnosis history will remain but won't be linked.</p>
+        <p className="text-xs text-red-500 mb-5">This action cannot be undone.</p>
         <div className="flex gap-3">
           <button onClick={onCancel} disabled={isDeleting}
             className="flex-1 py-2.5 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:border-gray-400 transition-all disabled:opacity-50">
@@ -28,13 +31,14 @@ const DeleteModal = ({ member, onConfirm, onCancel, isDeleting }) => (
             className="flex-1 py-2.5 bg-gradient-to-r from-red-500 to-rose-500 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-70 flex items-center justify-center space-x-2">
             {isDeleting
               ? <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
-              : <><FaTrash className="text-xs" /><span>Remove</span></>
+              : <><FaTrash className="text-xs" /><span>Yes, Remove and Delete Data</span></>
             }
           </button>
         </div>
       </div>
     </div>
-  </div>
+  </div>,
+  document.body
 );
 
 // ===================== Member Form =====================
@@ -229,6 +233,17 @@ const FamilyManager = () => {
 
   useEffect(() => { loadMembers(); }, []);
 
+  useEffect(() => {
+    if (!deleteModal) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [deleteModal]);
+
   const loadMembers = async () => {
     setLoading(true);
     const result = await familyService.getMembers();
@@ -268,11 +283,15 @@ const FamilyManager = () => {
     setIsDeleting(true);
     const result = await familyService.deleteMember(deleteModal.id);
     if (result.success) {
+      const deletedMemberId = deleteModal.id;
       setRemovingId(deleteModal.id);
       setTimeout(() => {
-        setMembers(prev => prev.filter(m => m.id !== deleteModal.id));
+        setMembers(prev => prev.filter(m => m.id !== deletedMemberId));
         setRemovingId(null);
-        toast.success('Member removed');
+        window.dispatchEvent(new CustomEvent('dermavision:family-member-deleted', {
+          detail: { familyMemberId: deletedMemberId },
+        }));
+        toast.success('Member and related diagnoses removed');
       }, 350);
       setDeleteModal(null);
     } else {

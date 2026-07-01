@@ -5,7 +5,7 @@ import json
 import logging
 from typing import List, Optional
 
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, delete as sqlalchemy_delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
@@ -71,6 +71,13 @@ class DiagnosisRepository:
             .offset(offset)
         )
         return list(result.scalars().all())
+
+    async def get_all_by_user(self, user_id: int) -> List[Diagnosis]:
+        """Get all diagnosis records for one user."""
+        result = await self.session.execute(
+            select(Diagnosis).where(Diagnosis.user_id == user_id)
+        )
+        return list(result.scalars().all())
     
     async def delete(self, diagnosis_id: int) -> bool:
         """Delete diagnosis record"""
@@ -81,3 +88,13 @@ class DiagnosisRepository:
             logger.info(f"Deleted diagnosis: {diagnosis_id}")
             return True
         return False
+
+    async def delete_by_user(self, user_id: int) -> int:
+        """Delete all diagnosis records owned by one user only."""
+        result = await self.session.execute(
+            sqlalchemy_delete(Diagnosis).where(Diagnosis.user_id == user_id)
+        )
+        await self.session.commit()
+        deleted_count = result.rowcount or 0
+        logger.info("Deleted %s diagnoses for user %s", deleted_count, user_id)
+        return deleted_count

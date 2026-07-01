@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { FaFileAlt, FaTrash, FaEye, FaCalendar, FaFilter, FaExclamationTriangle } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
@@ -30,9 +31,9 @@ const SkeletonCard = () => (
 );
 
 // ===================== Delete Modal =====================
-const DeleteModal = ({ analysis, onConfirm, onCancel, isDeleting }) => (
-  <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+const DeleteModal = ({ analysis, onConfirm, onCancel, isDeleting }) => createPortal(
+  <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
       <div className="h-1.5 bg-gradient-to-r from-red-500 to-rose-500"></div>
       <div className="p-8 text-center">
         <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-5">
@@ -60,7 +61,52 @@ const DeleteModal = ({ analysis, onConfirm, onCancel, isDeleting }) => (
         </div>
       </div>
     </div>
-  </div>
+  </div>,
+  document.body
+);
+
+const DeleteAllModal = ({ onConfirm, onCancel, isDeleting, isArabic }) => createPortal(
+  <div className="fixed inset-0 z-[100] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className="h-1.5 bg-gradient-to-r from-red-600 to-rose-600"></div>
+      <div className="p-8 text-center">
+        <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-5">
+          <FaExclamationTriangle className="text-red-500 text-2xl" />
+        </div>
+        <h3 className="text-xl font-black text-gray-900 dark:text-white mb-3">
+          {isArabic ? 'حذف كل سجل التشخيص؟' : 'Delete All Diagnosis?'}
+        </h3>
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">
+          {isArabic
+            ? 'هل أنت متأكد أنك تريد حذف كل سجل التشخيص؟'
+            : 'Are you sure you want to delete all diagnosis history?'}
+        </p>
+        <p className="text-xs text-red-500 dark:text-red-400 mb-6">
+          {isArabic ? 'لا يمكن التراجع عن هذا الإجراء.' : 'This action cannot be undone.'}
+        </p>
+        <div className="flex gap-3">
+          <button
+            onClick={onCancel}
+            disabled={isDeleting}
+            className="flex-1 py-3 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:border-gray-400 transition-all disabled:opacity-50"
+          >
+            {isArabic ? 'لا / إلغاء' : 'No / Cancel'}
+          </button>
+          <button
+            onClick={onConfirm}
+            disabled={isDeleting}
+            className="flex-1 py-3 bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold rounded-xl hover:shadow-lg transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+          >
+            {isDeleting
+              ? <><div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div><span>{isArabic ? 'جارٍ الحذف...' : 'Deleting...'}</span></>
+              : <><FaTrash className="text-sm" /><span>{isArabic ? 'نعم، احذف الكل' : 'Yes, Delete All'}</span></>
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  document.body
 );
 
 const getRelationLabel = (relation, isArabic) => {
@@ -87,7 +133,34 @@ const History = () => {
   const [filter, setFilter] = useState('all');
   const [deletingId, setDeletingId] = useState(null);
   const [deleteModal, setDeleteModal] = useState(null);
+  const [showDeleteAllModal, setShowDeleteAllModal] = useState(false);
+  const [deletingAll, setDeletingAll] = useState(false);
   const [removingId, setRemovingId] = useState(null);
+
+  useEffect(() => {
+    if (!deleteModal && !showDeleteAllModal) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [deleteModal, showDeleteAllModal]);
+
+  useEffect(() => {
+    const handleFamilyMemberDeleted = (event) => {
+      const deletedId = event.detail?.familyMemberId;
+      if (!deletedId) return;
+
+      setFamilyMembers(prev => prev.filter(member => String(member.id) !== String(deletedId)));
+      setAnalyses(prev => prev.filter(analysis => String(analysis.familyMemberId) !== String(deletedId)));
+      setFilter(prev => (prev === `family:${deletedId}` ? 'all' : prev));
+    };
+
+    window.addEventListener('dermavision:family-member-deleted', handleFamilyMemberDeleted);
+    return () => window.removeEventListener('dermavision:family-member-deleted', handleFamilyMemberDeleted);
+  }, []);
 
   useEffect(() => {
     // ✅ امسح البيانات القديمة فوراً لما الـ user يتغير
@@ -95,6 +168,8 @@ const History = () => {
     setFamilyMembers([]);
     setFilter('all');
     setDeleteModal(null);
+    setShowDeleteAllModal(false);
+    setDeletingAll(false);
     setRemovingId(null);
 
     if (!currentUser) {
@@ -174,6 +249,25 @@ const History = () => {
     }
   };
 
+  const handleDeleteAllConfirm = async () => {
+    setDeletingAll(true);
+    try {
+      const response = await diagnosisService.deleteAllAnalyses();
+      if (response.success) {
+        setAnalyses([]);
+        setFilter('all');
+        setShowDeleteAllModal(false);
+        toast.success(isArabic ? 'تم حذف كل سجل التشخيص بنجاح' : 'All diagnosis history deleted successfully');
+      } else {
+        toast.error(response.error);
+      }
+    } catch {
+      toast.error(isArabic ? 'فشل حذف سجل التشخيص' : 'Failed to delete diagnosis history');
+    } finally {
+      setDeletingAll(false);
+    }
+  };
+
   const getProbColor = (prob) => {
     if (prob >= 80) return 'text-green-600 dark:text-green-400';
     if (prob >= 60) return 'text-yellow-600 dark:text-yellow-400';
@@ -231,16 +325,38 @@ const History = () => {
           />
         )}
 
+        {showDeleteAllModal && (
+          <DeleteAllModal
+            onConfirm={handleDeleteAllConfirm}
+            onCancel={() => setShowDeleteAllModal(false)}
+            isDeleting={deletingAll}
+            isArabic={isArabic}
+          />
+        )}
+
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            {isArabic ? 'سجل التحليلات' : 'Analysis History'}
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400">
-            {currentUser
-              ? (isArabic ? 'تحليلات الجلد السابقة الخاصة بك وبأفراد العائلة' : 'Your previous skin analyses for you and family members')
-              : (isArabic ? 'يرجى تسجيل الدخول لعرض السجل' : 'Please login to view history')}
-          </p>
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+              {isArabic ? 'سجل التحليلات' : 'Analysis History'}
+            </h1>
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              {currentUser
+                ? (isArabic ? 'تحليلات الجلد السابقة الخاصة بك وبأفراد العائلة' : 'Your previous skin analyses for you and family members')
+                : (isArabic ? 'يرجى تسجيل الدخول لعرض السجل' : 'Please login to view history')}
+            </p>
+          </div>
+          {!loading && analyses.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowDeleteAllModal(true)}
+              disabled={deletingAll}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-5 py-3 font-bold text-red-600 transition-all hover:bg-red-100 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-800 dark:bg-red-900/20 dark:text-red-300 dark:hover:bg-red-900/40"
+            >
+              <FaTrash className="text-sm" />
+              <span>{isArabic ? 'حذف كل التشخيصات' : 'Delete All Diagnosis'}</span>
+            </button>
+          )}
         </div>
 
         {/* Filter Bar */}

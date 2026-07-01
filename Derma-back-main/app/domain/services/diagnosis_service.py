@@ -144,3 +144,23 @@ class DiagnosisService:
             logger.info(f"Diagnosis {diagnosis_id} deleted by user {user_id}")
 
         return deleted
+
+    async def delete_all_diagnoses(self, user_id: int) -> int:
+        """Delete all diagnosis records owned by the current user."""
+        diagnoses = await self.diagnosis_repo.get_all_by_user(user_id)
+
+        for diagnosis in diagnoses:
+            try:
+                from pathlib import Path
+                if diagnosis.image_path:
+                    await self.file_service.delete_file(Path(diagnosis.image_path))
+            except Exception as e:
+                logger.warning(
+                    "Could not delete image file for diagnosis %s: %s",
+                    diagnosis.id,
+                    e,
+                )
+
+        deleted_count = await self.diagnosis_repo.delete_by_user(user_id)
+        logger.info("Deleted all diagnoses for user %s: count=%s", user_id, deleted_count)
+        return deleted_count

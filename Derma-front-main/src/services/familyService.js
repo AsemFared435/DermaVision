@@ -32,10 +32,10 @@ const familyService = {
     }
   },
 
-  // ✅ DELETE /members/:id
+  // ✅ DELETE /family-members/:id
   deleteMember: async (memberId) => {
     try {
-      await api.delete(`/members/${memberId}`);
+      await api.delete(`/family-members/${memberId}`);
       return { success: true };
     } catch (error) {
       return { success: false, error: error.response?.data?.detail || 'Failed to delete member' };

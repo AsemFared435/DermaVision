@@ -1,8 +1,9 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import {
   FaCloudUploadAlt, FaCheckCircle, FaCrop,
-  FaUndo, FaSearch, FaArrowRight, FaImage, FaUsers, FaPlus
+  FaUndo, FaSearch, FaArrowRight, FaImage, FaUsers, FaPlus, FaTrash, FaExclamationTriangle
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -63,7 +64,7 @@ const StepProgressBar = ({ currentStep }) => {
 };
 
 // ===================== Patient Selector =====================
-const PatientSelector = ({ members, selected, onSelect, loading }) => {
+const PatientSelector = ({ members, selected, onSelect, loading, onDeleteMember, deletingMemberId }) => {
   const { userData } = useAuth();
   const { t } = useTranslation();
 
@@ -123,15 +124,34 @@ const PatientSelector = ({ members, selected, onSelect, loading }) => {
             {members.map(member => {
               const rel = familyService.getRelationInfo(member.relation);
               return (
-                <button
+                <div
                   key={member.id}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => onSelect(member)}
-                  className={`flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-200 min-w-[80px] ${
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') onSelect(member);
+                  }}
+                  className={`relative flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-200 min-w-[80px] cursor-pointer ${
                     selected?.id === member.id
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 shadow-md scale-105'
                       : 'border-gray-200 dark:border-gray-600 hover:border-blue-300 hover:bg-blue-50/50 dark:hover:bg-gray-700'
                   }`}
                 >
+                  <button
+                    type="button"
+                    aria-label={`Remove ${member.name}`}
+                    disabled={deletingMemberId === member.id}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onDeleteMember(member);
+                    }}
+                    className="absolute -right-2 -top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-red-200 bg-white text-red-500 shadow-md transition-all hover:bg-red-50 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 dark:border-red-800 dark:bg-gray-800 dark:text-red-300 dark:hover:bg-red-900/30"
+                  >
+                    {deletingMemberId === member.id
+                      ? <span className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
+                      : <FaTrash className="text-xs" />}
+                  </button>
                   <span className="text-2xl mb-1">{rel.icon}</span>
                   <span className="text-xs font-bold text-gray-800 dark:text-gray-200 text-center leading-tight max-w-[70px] truncate">
                     {member.name}
@@ -142,7 +162,7 @@ const PatientSelector = ({ members, selected, onSelect, loading }) => {
                       <FaCheckCircle className="text-white text-xs" />
                     </div>
                   )}
-                </button>
+                </div>
               );
             })}
 
@@ -170,6 +190,50 @@ const PatientSelector = ({ members, selected, onSelect, loading }) => {
     </div>
   );
 };
+
+const RemoveFamilyMemberModal = ({ member, onConfirm, onCancel, isDeleting, isArabic }) => createPortal(
+  <div className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm">
+    <div className="w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-gray-800">
+      <div className="h-1.5 bg-gradient-to-r from-red-500 to-rose-500" />
+      <div className="p-7 text-center">
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
+          <FaExclamationTriangle className="text-2xl text-red-500" />
+        </div>
+        <h3 className="mb-3 text-xl font-black text-gray-900 dark:text-white">
+          {isArabic ? 'إزالة فرد العائلة؟' : 'Remove Family Member?'}
+        </h3>
+        <p className="mb-4 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+          {isArabic
+            ? 'هل أنت متأكد أنك تريد إزالة فرد العائلة؟ سيتم أيضًا حذف كل سجلات التشخيص المرتبطة بهذا الفرد.'
+            : 'Are you sure you want to remove this family member? This will also delete all diagnosis records related to this member.'}
+        </p>
+        <div className="mb-6 inline-flex items-center gap-2 rounded-xl bg-gray-100 px-4 py-2 dark:bg-gray-700">
+          <span className="text-xl">{familyService.getRelationInfo(member?.relation)?.icon}</span>
+          <span className="font-bold text-gray-800 dark:text-gray-200">{member?.name}</span>
+        </div>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isDeleting}
+            className="flex-1 rounded-xl border-2 border-gray-200 py-3 font-bold text-gray-700 transition-all hover:border-gray-400 disabled:opacity-50 dark:border-gray-600 dark:text-gray-300"
+          >
+            {isArabic ? 'إلغاء' : 'Cancel'}
+          </button>
+          <button
+            type="button"
+            onClick={onConfirm}
+            disabled={isDeleting}
+            className="flex-1 rounded-xl bg-gradient-to-r from-red-500 to-rose-500 py-3 font-bold text-white transition-all hover:shadow-lg disabled:opacity-70"
+          >
+            {isDeleting ? (isArabic ? 'جارٍ الحذف...' : 'Removing...') : (isArabic ? 'نعم، إزالة وحذف البيانات' : 'Yes, Remove and Delete Data')}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>,
+  document.body
+);
 
 // ===================== Success Animation =====================
 const SuccessAnimation = ({ disease, probability, patientName }) => {
@@ -413,13 +477,22 @@ const Upload = () => {
   const [familyMembers, setFamilyMembers] = useState([]);
   const [familyLoading, setFamilyLoading] = useState(true);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [deleteFamilyModal, setDeleteFamilyModal] = useState(null);
+  const [deletingFamilyMemberId, setDeletingFamilyMemberId] = useState(null);
 
   const { currentUser, userData } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
+  const isArabic = language === 'ar';
   const selfLabel = t.upload?.myself || 'Myself';
   const croppedObjectUrlRef = useRef(null);
   const transferCroppedObjectUrlRef = useRef(false);
+
+  const buildSelfPatient = useCallback(() => ({
+    id: 'self',
+    name: userData?.username || userData?.name || selfLabel,
+    relation: 'self',
+  }), [selfLabel, userData?.name, userData?.username]);
 
   const revokeCroppedObjectUrl = useCallback(() => {
     if (croppedObjectUrlRef.current) {
@@ -443,14 +516,35 @@ const Upload = () => {
       setFamilyLoading(false);
 
       // Default: select self
-      setSelectedPatient({
-        id: 'self',
-        name: userData?.username || userData?.name || selfLabel,
-        relation: 'self',
-      });
+      setSelectedPatient(buildSelfPatient());
     };
     if (currentUser) loadFamily();
-  }, [currentUser]);
+  }, [currentUser, buildSelfPatient]);
+
+  useEffect(() => {
+    if (!deleteFamilyModal) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [deleteFamilyModal]);
+
+  useEffect(() => {
+    const handleFamilyMemberDeleted = (event) => {
+      const deletedId = event.detail?.familyMemberId;
+      if (!deletedId) return;
+      setFamilyMembers(prev => prev.filter(member => String(member.id) !== String(deletedId)));
+      setSelectedPatient(prev => (
+        String(prev?.id) === String(deletedId) ? buildSelfPatient() : prev
+      ));
+    };
+
+    window.addEventListener('dermavision:family-member-deleted', handleFamilyMemberDeleted);
+    return () => window.removeEventListener('dermavision:family-member-deleted', handleFamilyMemberDeleted);
+  }, [buildSelfPatient]);
 
   // ✅ Step tracking: 1=patient, 2=upload, 3=crop, 4=analyze, 5=results
   const getCurrentStep = () => {
@@ -540,6 +634,33 @@ const Upload = () => {
     }
   };
 
+  const handleRemoveFamilyMember = async () => {
+    if (!deleteFamilyModal) return;
+
+    const deletedMember = deleteFamilyModal;
+    setDeletingFamilyMemberId(deletedMember.id);
+    try {
+      const response = await familyService.deleteMember(deletedMember.id);
+      if (response.success) {
+        setFamilyMembers(prev => prev.filter(member => member.id !== deletedMember.id));
+        if (selectedPatient?.id === deletedMember.id) {
+          setSelectedPatient(buildSelfPatient());
+        }
+        setDeleteFamilyModal(null);
+        window.dispatchEvent(new CustomEvent('dermavision:family-member-deleted', {
+          detail: { familyMemberId: deletedMember.id },
+        }));
+        toast.success(isArabic ? 'تم حذف فرد العائلة وسجلاته المرتبطة' : 'Family member and related diagnoses removed');
+      } else {
+        toast.error(response.error);
+      }
+    } catch {
+      toast.error(isArabic ? 'فشل حذف فرد العائلة' : 'Failed to remove family member');
+    } finally {
+      setDeletingFamilyMemberId(null);
+    }
+  };
+
   const handleViewReport = () => {
     if (preview === croppedObjectUrlRef.current) {
       transferCroppedObjectUrlRef.current = true;
@@ -574,6 +695,16 @@ const Upload = () => {
         <CropTool imageSrc={originalPreview} onCropDone={handleCropDone} onCancel={handleCropCancel} />
       )}
 
+      {deleteFamilyModal && (
+        <RemoveFamilyMemberModal
+          member={deleteFamilyModal}
+          onConfirm={handleRemoveFamilyMember}
+          onCancel={() => setDeleteFamilyModal(null)}
+          isDeleting={deletingFamilyMemberId === deleteFamilyModal.id}
+          isArabic={isArabic}
+        />
+      )}
+
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -600,6 +731,8 @@ const Upload = () => {
           members={familyMembers}
           selected={selectedPatient}
           onSelect={setSelectedPatient}
+          onDeleteMember={setDeleteFamilyModal}
+          deletingMemberId={deletingFamilyMemberId}
           loading={familyLoading}
         />
 

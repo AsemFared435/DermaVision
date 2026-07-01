@@ -219,6 +219,33 @@ async def get_diagnosis_by_id(
         )
 
 
+@router.delete(
+    "/diagnosis",
+    status_code=status.HTTP_200_OK,
+    summary="Delete all diagnoses",
+    description="Delete all diagnosis records owned by the current authenticated user"
+)
+async def delete_all_diagnoses(
+    user_id: Annotated[int, Depends(get_current_user_id)],
+    diagnosis_service: Annotated[DiagnosisService, Depends(get_diagnosis_service)]
+) -> dict:
+    try:
+        deleted_count = await diagnosis_service.delete_all_diagnoses(user_id)
+        logger.info("All diagnoses deleted by user %s: count=%s", user_id, deleted_count)
+        return {
+            "success": True,
+            "message": "All diagnoses deleted successfully",
+            "deleted_count": deleted_count,
+        }
+
+    except Exception as e:
+        logger.error(f"Error deleting all diagnoses: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error deleting diagnosis history"
+        )
+
+
 # ✅ NEW: Delete diagnosis endpoint
 @router.delete(
     "/diagnosis/{analysis_id}",
